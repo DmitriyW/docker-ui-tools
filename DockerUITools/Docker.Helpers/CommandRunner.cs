@@ -13,7 +13,7 @@ public static class CommandRunner
         proc.StartInfo.RedirectStandardOutput = true;
         proc.StartInfo.CreateNoWindow = true;
         proc.Start();
-        proc.WaitForExit();
+        //proc.WaitForExit();
 
         return proc.StandardOutput.ReadToEnd();
     }
