@@ -55,10 +55,13 @@
             pause = new Button();
             start = new Button();
             stop = new Button();
+            imagePage = new TabPage();
+            imagePage1 = new ImagePage();
             navigationImgs = new ImageList(components);
             containerContextMenu.SuspendLayout();
             navigation.SuspendLayout();
             containerPage.SuspendLayout();
+            imagePage.SuspendLayout();
             SuspendLayout();
             // 
             // refreshContainerList
@@ -186,6 +189,7 @@
             // 
             navigation.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             navigation.Controls.Add(containerPage);
+            navigation.Controls.Add(imagePage);
             navigation.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold, GraphicsUnit.Point);
             navigation.ImageList = navigationImgs;
             navigation.Location = new Point(12, 12);
@@ -277,6 +281,27 @@
             stop.UseVisualStyleBackColor = false;
             stop.Click += stop_Click;
             // 
+            // imagePage
+            // 
+            imagePage.Controls.Add(imagePage1);
+            imagePage.Location = new Point(4, 40);
+            imagePage.Name = "imagePage";
+            imagePage.Padding = new Padding(3);
+            imagePage.Size = new Size(1272, 485);
+            imagePage.TabIndex = 1;
+            imagePage.Text = "Images";
+            imagePage.UseVisualStyleBackColor = true;
+            // 
+            // imagePage1
+            // 
+            imagePage1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            imagePage1.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold, GraphicsUnit.Point);
+            imagePage1.Location = new Point(8, 8);
+            imagePage1.Margin = new Padding(5);
+            imagePage1.Name = "imagePage1";
+            imagePage1.Size = new Size(1259, 469);
+            imagePage1.TabIndex = 0;
+            // 
             // navigationImgs
             // 
             navigationImgs.ColorDepth = ColorDepth.Depth32Bit;
@@ -308,6 +333,7 @@
             navigation.ResumeLayout(false);
             containerPage.ResumeLayout(false);
             containerPage.PerformLayout();
+            imagePage.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -339,5 +365,7 @@
         private ToolStripMenuItem restartContainerMenu;
         private ColumnHeader lastStarted;
         private CheckBox checkAll;
+        private TabPage imagePage;
+        private ImagePage imagePage1;
     }
 }

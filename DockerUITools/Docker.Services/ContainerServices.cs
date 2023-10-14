@@ -12,9 +12,9 @@ public class ContainerServices
         await Task.Run(() =>
         {
             var result = CommandRunner
-            .RunCommand("docker", "ps -a --format json")
-            .ToString()
-            .SplitToRows();
+                .RunCommand("docker", "ps -a --format json")
+                .ToString()
+                .SplitToRows();
 
             var jsonHelper = new JsonHelper<Container>();
             var containers = jsonHelper.ConvertTo(result);
