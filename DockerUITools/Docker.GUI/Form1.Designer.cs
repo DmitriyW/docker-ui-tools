@@ -30,7 +30,7 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            refresh = new Button();
+            refreshContainerList = new Button();
             containerList = new ListView();
             icon = new ColumnHeader();
             containerName = new ColumnHeader();
@@ -51,7 +51,7 @@
             containerPage = new TabPage();
             checkAll = new CheckBox();
             searchContainer = new TextBox();
-            delete = new Button();
+            deleteContainer = new Button();
             pause = new Button();
             start = new Button();
             stop = new Button();
@@ -61,16 +61,16 @@
             containerPage.SuspendLayout();
             SuspendLayout();
             // 
-            // refresh
+            // refreshContainerList
             // 
-            refresh.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            refresh.Location = new Point(1161, 6);
-            refresh.Name = "refresh";
-            refresh.Size = new Size(105, 42);
-            refresh.TabIndex = 0;
-            refresh.Text = "Refresh";
-            refresh.UseVisualStyleBackColor = true;
-            refresh.Click += refresh_Click;
+            refreshContainerList.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            refreshContainerList.Location = new Point(1161, 6);
+            refreshContainerList.Name = "refreshContainerList";
+            refreshContainerList.Size = new Size(105, 42);
+            refreshContainerList.TabIndex = 0;
+            refreshContainerList.Text = "Refresh";
+            refreshContainerList.UseVisualStyleBackColor = true;
+            refreshContainerList.Click += refresh_Click;
             // 
             // containerList
             // 
@@ -199,9 +199,9 @@
             // 
             containerPage.Controls.Add(checkAll);
             containerPage.Controls.Add(searchContainer);
-            containerPage.Controls.Add(refresh);
+            containerPage.Controls.Add(refreshContainerList);
             containerPage.Controls.Add(containerList);
-            containerPage.Controls.Add(delete);
+            containerPage.Controls.Add(deleteContainer);
             containerPage.Controls.Add(pause);
             containerPage.Controls.Add(start);
             containerPage.Controls.Add(stop);
@@ -229,17 +229,17 @@
             searchContainer.Size = new Size(231, 38);
             searchContainer.TabIndex = 8;
             // 
-            // delete
+            // deleteContainer
             // 
-            delete.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            delete.BackColor = Color.LightSalmon;
-            delete.Location = new Point(563, 6);
-            delete.Name = "delete";
-            delete.Size = new Size(109, 46);
-            delete.TabIndex = 7;
-            delete.Text = "Delete";
-            delete.UseVisualStyleBackColor = false;
-            delete.Click += delete_Click;
+            deleteContainer.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            deleteContainer.BackColor = Color.LightSalmon;
+            deleteContainer.Location = new Point(563, 6);
+            deleteContainer.Name = "deleteContainer";
+            deleteContainer.Size = new Size(109, 46);
+            deleteContainer.TabIndex = 7;
+            deleteContainer.Text = "Delete";
+            deleteContainer.UseVisualStyleBackColor = false;
+            deleteContainer.Click += delete_Click;
             // 
             // pause
             // 
@@ -313,7 +313,7 @@
 
         #endregion
 
-        private Button refresh;
+        private Button refreshContainerList;
         private ListView containerList;
         private ColumnHeader containerName;
         private ColumnHeader image;
@@ -327,7 +327,7 @@
         private Button start;
         private Button stop;
         private Button pause;
-        private Button delete;
+        private Button deleteContainer;
         private ContextMenuStrip containerContextMenu;
         private ToolStripMenuItem startContainerMenu;
         private ToolStripMenuItem stopContainerMenu;
