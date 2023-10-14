@@ -47,12 +47,13 @@
             copyIdContainerMenu = new ToolStripMenuItem();
             navigation = new TabControl();
             containerPage = new TabPage();
-            navigationImgs = new ImageList(components);
+            searchContainer = new TextBox();
+            delete = new Button();
+            pause = new Button();
             start = new Button();
             stop = new Button();
-            pause = new Button();
-            delete = new Button();
-            searchContainer = new TextBox();
+            navigationImgs = new ImageList(components);
+            restartContainerMenu = new ToolStripMenuItem();
             containerContextMenu.SuspendLayout();
             navigation.SuspendLayout();
             containerPage.SuspendLayout();
@@ -124,47 +125,47 @@
             // containerContextMenu
             // 
             containerContextMenu.ImageScalingSize = new Size(20, 20);
-            containerContextMenu.Items.AddRange(new ToolStripItem[] { startContainerMenu, stopContainerMenu, pauseContainerMenu, deleteContainerMenu, toolStripSeparator1, copyIdContainerMenu });
+            containerContextMenu.Items.AddRange(new ToolStripItem[] { startContainerMenu, stopContainerMenu, pauseContainerMenu, deleteContainerMenu, restartContainerMenu, toolStripSeparator1, copyIdContainerMenu });
             containerContextMenu.Name = "ContainerContextMenu";
-            containerContextMenu.Size = new Size(196, 130);
+            containerContextMenu.Size = new Size(211, 182);
             // 
             // startContainerMenu
             // 
             startContainerMenu.Name = "startContainerMenu";
-            startContainerMenu.Size = new Size(195, 24);
+            startContainerMenu.Size = new Size(210, 24);
             startContainerMenu.Text = "Start";
             startContainerMenu.Click += startContainerMenu_Click;
             // 
             // stopContainerMenu
             // 
             stopContainerMenu.Name = "stopContainerMenu";
-            stopContainerMenu.Size = new Size(195, 24);
+            stopContainerMenu.Size = new Size(210, 24);
             stopContainerMenu.Text = "Stop";
             stopContainerMenu.Click += stopContainerMenu_Click;
             // 
             // pauseContainerMenu
             // 
             pauseContainerMenu.Name = "pauseContainerMenu";
-            pauseContainerMenu.Size = new Size(195, 24);
+            pauseContainerMenu.Size = new Size(210, 24);
             pauseContainerMenu.Text = "Pause";
             pauseContainerMenu.Click += pauseContainerMenu_Click;
             // 
             // deleteContainerMenu
             // 
             deleteContainerMenu.Name = "deleteContainerMenu";
-            deleteContainerMenu.Size = new Size(195, 24);
+            deleteContainerMenu.Size = new Size(210, 24);
             deleteContainerMenu.Text = "Delete";
             deleteContainerMenu.Click += deleteContainerMenu_Click;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(192, 6);
+            toolStripSeparator1.Size = new Size(207, 6);
             // 
             // copyIdContainerMenu
             // 
             copyIdContainerMenu.Name = "copyIdContainerMenu";
-            copyIdContainerMenu.Size = new Size(195, 24);
+            copyIdContainerMenu.Size = new Size(210, 24);
             copyIdContainerMenu.Text = "Copy container Id";
             copyIdContainerMenu.Click += copyIdContainerMenu_Click;
             // 
@@ -197,22 +198,32 @@
             containerPage.Text = "Containers";
             containerPage.UseVisualStyleBackColor = true;
             // 
-            // navigationImgs
+            // searchContainer
             // 
-            navigationImgs.ColorDepth = ColorDepth.Depth32Bit;
-            navigationImgs.ImageStream = (ImageListStreamer)resources.GetObject("navigationImgs.ImageStream");
-            navigationImgs.TransparentColor = Color.Transparent;
-            navigationImgs.Images.SetKeyName(0, "8754c45c0adf4780dabf04f1bd6684af.jpg");
-            navigationImgs.Images.SetKeyName(1, "860068.png");
-            navigationImgs.Images.SetKeyName(2, "860142.png");
-            navigationImgs.Images.SetKeyName(3, "255-2553250_icon-docker-notext-color-docker-icon-png-transparent.png");
-            navigationImgs.Images.SetKeyName(4, "831845.png");
-            navigationImgs.Images.SetKeyName(5, "878943_media_512x512.png");
-            navigationImgs.Images.SetKeyName(6, "4844483.png");
-            navigationImgs.Images.SetKeyName(7, "docker_icon_132435.png");
-            navigationImgs.Images.SetKeyName(8, "docker_icon_138669.png");
-            navigationImgs.Images.SetKeyName(9, "image_processing20210616-28547-1u2ox9e.png");
-            navigationImgs.Images.SetKeyName(10, "png-transparent-docker-computer-icons-logo-others-miscellaneous-text-logo.png");
+            searchContainer.Location = new Point(68, 14);
+            searchContainer.Name = "searchContainer";
+            searchContainer.Size = new Size(231, 38);
+            searchContainer.TabIndex = 8;
+            // 
+            // delete
+            // 
+            delete.Location = new Point(1049, 6);
+            delete.Name = "delete";
+            delete.Size = new Size(109, 46);
+            delete.TabIndex = 7;
+            delete.Text = "Delete";
+            delete.UseVisualStyleBackColor = true;
+            delete.Click += delete_Click;
+            // 
+            // pause
+            // 
+            pause.Location = new Point(769, 6);
+            pause.Name = "pause";
+            pause.Size = new Size(109, 46);
+            pause.TabIndex = 6;
+            pause.Text = "Pause";
+            pause.UseVisualStyleBackColor = true;
+            pause.Click += pause_Click;
             // 
             // start
             // 
@@ -234,32 +245,29 @@
             stop.UseVisualStyleBackColor = true;
             stop.Click += stop_Click;
             // 
-            // pause
+            // navigationImgs
             // 
-            pause.Location = new Point(769, 6);
-            pause.Name = "pause";
-            pause.Size = new Size(109, 46);
-            pause.TabIndex = 6;
-            pause.Text = "Pause";
-            pause.UseVisualStyleBackColor = true;
-            pause.Click += pause_Click;
+            navigationImgs.ColorDepth = ColorDepth.Depth32Bit;
+            navigationImgs.ImageStream = (ImageListStreamer)resources.GetObject("navigationImgs.ImageStream");
+            navigationImgs.TransparentColor = Color.Transparent;
+            navigationImgs.Images.SetKeyName(0, "8754c45c0adf4780dabf04f1bd6684af.jpg");
+            navigationImgs.Images.SetKeyName(1, "860068.png");
+            navigationImgs.Images.SetKeyName(2, "860142.png");
+            navigationImgs.Images.SetKeyName(3, "255-2553250_icon-docker-notext-color-docker-icon-png-transparent.png");
+            navigationImgs.Images.SetKeyName(4, "831845.png");
+            navigationImgs.Images.SetKeyName(5, "878943_media_512x512.png");
+            navigationImgs.Images.SetKeyName(6, "4844483.png");
+            navigationImgs.Images.SetKeyName(7, "docker_icon_132435.png");
+            navigationImgs.Images.SetKeyName(8, "docker_icon_138669.png");
+            navigationImgs.Images.SetKeyName(9, "image_processing20210616-28547-1u2ox9e.png");
+            navigationImgs.Images.SetKeyName(10, "png-transparent-docker-computer-icons-logo-others-miscellaneous-text-logo.png");
             // 
-            // delete
+            // restartContainerMenu
             // 
-            delete.Location = new Point(1049, 6);
-            delete.Name = "delete";
-            delete.Size = new Size(109, 46);
-            delete.TabIndex = 7;
-            delete.Text = "Delete";
-            delete.UseVisualStyleBackColor = true;
-            delete.Click += delete_Click;
-            // 
-            // searchContainer
-            // 
-            searchContainer.Location = new Point(68, 14);
-            searchContainer.Name = "searchContainer";
-            searchContainer.Size = new Size(231, 38);
-            searchContainer.TabIndex = 8;
+            restartContainerMenu.Name = "restartContainerMenu";
+            restartContainerMenu.Size = new Size(210, 24);
+            restartContainerMenu.Text = "Restart";
+            restartContainerMenu.Click += restartContainerMenu_Click;
             // 
             // Form1
             // 
@@ -304,5 +312,6 @@
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripMenuItem copyIdContainerMenu;
         private TextBox searchContainer;
+        private ToolStripMenuItem restartContainerMenu;
     }
 }

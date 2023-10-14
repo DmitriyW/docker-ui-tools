@@ -34,9 +34,9 @@ namespace Docker.GUI
         {
             string txt = string.Empty;
             var list = new List<ListViewItem>();
-            if (getFreshData) 
-            { 
-                _containers = containersService.GetContainers(); 
+            if (getFreshData)
+            {
+                _containers = containersService.GetContainers();
             }
 
             _containers = _containers.OrderByDescending(x => x.State);
@@ -164,6 +164,16 @@ namespace Docker.GUI
             {
                 containersService.StartContainer(_containers.ToList()[index].ID);
             }
+
+            RefreshContainers();
+        }
+
+        private void restartContainerMenu_Click(object sender, EventArgs e)
+        {
+            var focusedItem = this.containerList.FocusedItem;
+            var index = focusedItem.Index;
+
+            containersService.RestartContainer(_containers.ToList()[index].ID);
 
             RefreshContainers();
         }
