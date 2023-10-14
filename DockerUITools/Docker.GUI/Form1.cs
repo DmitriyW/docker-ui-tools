@@ -83,15 +83,8 @@ namespace Docker.GUI
 
         private void refresh_Click(object sender, EventArgs e)
         {
-            switch (this.navigation.SelectedTab.Name)
-            {
-                case "containerPage":
-                    this.refreshContainerList.Enabled = false;
-                    RefreshContainersAsync();
-                    break;
-                default:
-                    break;
-            }
+            this.refreshContainerList.Enabled = false;
+            RefreshContainersAsync();
         }
 
         private async Task RefreshContainersAsync(bool getFreshData = true)
@@ -126,7 +119,7 @@ namespace Docker.GUI
                 lvi.Checked = _selectedContainers.Contains(item.ID);
                 lvi.SubItems.Add(item.Names);
                 lvi.SubItems.Add(item.Image);
-                lvi.SubItems.Add(item.State.ToString());
+                lvi.SubItems.Add(item.State);
                 lvi.SubItems.Add(item.Ports);
                 lvi.SubItems.Add(item.Status);
                 lvi.ImageIndex = GetContainerImage(item.State.Trim().ToLower());
