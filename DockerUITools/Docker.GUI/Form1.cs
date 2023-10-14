@@ -34,9 +34,9 @@ namespace Docker.GUI
         {
             string txt = string.Empty;
             var list = new List<ListViewItem>();
-            if (getFreshData) 
-            { 
-                _containers = containersService.GetContainers(); 
+            if (getFreshData)
+            {
+                _containers = containersService.GetContainers();
             }
 
             _containers = _containers.OrderByDescending(x => x.State);
@@ -50,6 +50,7 @@ namespace Docker.GUI
                 lvi.SubItems.Add(item.Image);
                 lvi.SubItems.Add(item.State.ToString());
                 lvi.SubItems.Add(item.Ports);
+                lvi.SubItems.Add(item.Status);
                 lvi.ImageIndex = GetContainerImage(item.State.Trim().ToLower());
                 lvi.ForeColor = item.State.Trim().ToLower() == "exited" ? SystemColors.GrayText : SystemColors.WindowText;
                 list.Add(lvi);
@@ -164,6 +165,16 @@ namespace Docker.GUI
             {
                 containersService.StartContainer(_containers.ToList()[index].ID);
             }
+
+            RefreshContainers();
+        }
+
+        private void restartContainerMenu_Click(object sender, EventArgs e)
+        {
+            var focusedItem = this.containerList.FocusedItem;
+            var index = focusedItem.Index;
+
+            containersService.RestartContainer(_containers.ToList()[index].ID);
 
             RefreshContainers();
         }

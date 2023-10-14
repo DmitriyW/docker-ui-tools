@@ -26,6 +26,11 @@ public class ContainerServices
             .RunCommand("docker", $"start {containerId}")
             .ToString();
 
+    public string RestartContainer(string containerId)
+        => CommandRunner
+            .RunCommand("docker", $"restart {containerId}")
+            .ToString();
+
     public string StopContainer(string containerId)
         => CommandRunner
             .RunCommand("docker", $"stop {containerId}")
