@@ -38,6 +38,13 @@
             status = new ColumnHeader();
             ports = new ColumnHeader();
             containerStates = new ImageList(components);
+            containerContextMenu = new ContextMenuStrip(components);
+            startContainerMenu = new ToolStripMenuItem();
+            stopContainerMenu = new ToolStripMenuItem();
+            pauseContainerMenu = new ToolStripMenuItem();
+            deleteContainerMenu = new ToolStripMenuItem();
+            toolStripSeparator1 = new ToolStripSeparator();
+            copyIdContainerMenu = new ToolStripMenuItem();
             navigation = new TabControl();
             containerPage = new TabPage();
             navigationImgs = new ImageList(components);
@@ -45,6 +52,7 @@
             stop = new Button();
             pause = new Button();
             delete = new Button();
+            containerContextMenu.SuspendLayout();
             navigation.SuspendLayout();
             containerPage.SuspendLayout();
             SuspendLayout();
@@ -111,6 +119,53 @@
             containerStates.Images.SetKeyName(0, "2312798.png");
             containerStates.Images.SetKeyName(1, "2312889.png");
             containerStates.Images.SetKeyName(2, "oie_transparent.png");
+            // 
+            // containerContextMenu
+            // 
+            containerContextMenu.ImageScalingSize = new Size(20, 20);
+            containerContextMenu.Items.AddRange(new ToolStripItem[] { startContainerMenu, stopContainerMenu, pauseContainerMenu, deleteContainerMenu, toolStripSeparator1, copyIdContainerMenu });
+            containerContextMenu.Name = "ContainerContextMenu";
+            containerContextMenu.Size = new Size(196, 130);
+            // 
+            // startContainerMenu
+            // 
+            startContainerMenu.Name = "startContainerMenu";
+            startContainerMenu.Size = new Size(195, 24);
+            startContainerMenu.Text = "Start";
+            startContainerMenu.Click += startContainerMenu_Click;
+            // 
+            // stopContainerMenu
+            // 
+            stopContainerMenu.Name = "stopContainerMenu";
+            stopContainerMenu.Size = new Size(195, 24);
+            stopContainerMenu.Text = "Stop";
+            stopContainerMenu.Click += stopContainerMenu_Click;
+            // 
+            // pauseContainerMenu
+            // 
+            pauseContainerMenu.Name = "pauseContainerMenu";
+            pauseContainerMenu.Size = new Size(195, 24);
+            pauseContainerMenu.Text = "Pause";
+            pauseContainerMenu.Click += pauseContainerMenu_Click;
+            // 
+            // deleteContainerMenu
+            // 
+            deleteContainerMenu.Name = "deleteContainerMenu";
+            deleteContainerMenu.Size = new Size(195, 24);
+            deleteContainerMenu.Text = "Delete";
+            deleteContainerMenu.Click += deleteContainerMenu_Click;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(192, 6);
+            // 
+            // copyIdContainerMenu
+            // 
+            copyIdContainerMenu.Name = "copyIdContainerMenu";
+            copyIdContainerMenu.Size = new Size(195, 24);
+            copyIdContainerMenu.Text = "Copy container Id";
+            copyIdContainerMenu.Click += copyIdContainerMenu_Click;
             // 
             // navigation
             // 
@@ -208,6 +263,7 @@
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Docker Tools";
+            containerContextMenu.ResumeLayout(false);
             navigation.ResumeLayout(false);
             containerPage.ResumeLayout(false);
             ResumeLayout(false);
@@ -230,5 +286,12 @@
         private Button stop;
         private Button pause;
         private Button delete;
+        private ContextMenuStrip containerContextMenu;
+        private ToolStripMenuItem startContainerMenu;
+        private ToolStripMenuItem stopContainerMenu;
+        private ToolStripMenuItem pauseContainerMenu;
+        private ToolStripMenuItem deleteContainerMenu;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem copyIdContainerMenu;
     }
 }
