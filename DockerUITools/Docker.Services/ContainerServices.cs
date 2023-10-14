@@ -20,4 +20,29 @@ public class ContainerServices
 
         return containers;
     }
+
+    public string StartContainer(string containerId)
+        => CommandRunner
+            .RunCommand("docker", $"start {containerId}")
+            .ToString();
+
+    public string StopContainer(string containerId)
+        => CommandRunner
+            .RunCommand("docker", $"stop {containerId}")
+            .ToString();
+
+    public string PauseContainer(string containerId)
+        => CommandRunner
+            .RunCommand("docker", $"pause {containerId}")
+            .ToString();
+
+    public string UnpauseContainer(string containerId)
+        => CommandRunner
+            .RunCommand("docker", $"unpause {containerId}")
+            .ToString();
+
+    public string DeleteContainer(string containerId)
+    => CommandRunner
+        .RunCommand("docker", $"rm {containerId}")
+        .ToString();
 }
