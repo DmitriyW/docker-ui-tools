@@ -1,6 +1,9 @@
 using Docker.Models;
 using Docker.Services;
+using System;
+using System.Reflection;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Docker.GUI
 {
@@ -12,9 +15,10 @@ namespace Docker.GUI
         public Form1()
         {
             InitializeComponent();
+            this.containerList.MouseClick += ContainerList_MouseClick;
             containersService = new ContainerServices();
+            RefreshContainers();
         }
-
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -75,6 +79,13 @@ namespace Docker.GUI
 
         private void start_Click(object sender, EventArgs e)
         {
+            startContainer();
+
+            RefreshContainers();
+        }
+
+        private void startContainer()
+        {
             foreach (int index in GetSelectedIndexes())
             {
                 if (_containers.ToList()[index].State == "paused")
@@ -86,15 +97,13 @@ namespace Docker.GUI
                     containersService.StartContainer(_containers.ToList()[index].ID);
                 }
             }
-
-            RefreshContainers();
         }
 
         private void stop_Click(object sender, EventArgs e)
         {
             foreach (int index in GetSelectedIndexes())
             {
-                var r = containersService.StopContainer(_containers.ToList()[index].ID);
+                containersService.StopContainer(_containers.ToList()[index].ID);
             }
 
             RefreshContainers();
@@ -104,7 +113,7 @@ namespace Docker.GUI
         {
             foreach (int index in GetSelectedIndexes())
             {
-                var r = containersService.PauseContainer(_containers.ToList()[index].ID);
+                containersService.PauseContainer(_containers.ToList()[index].ID);
             }
 
             RefreshContainers();
@@ -114,10 +123,22 @@ namespace Docker.GUI
         {
             foreach (int index in GetSelectedIndexes())
             {
-                var r = containersService.DeleteContainer(_containers.ToList()[index].ID);
+                containersService.DeleteContainer(_containers.ToList()[index].ID);
             }
 
             RefreshContainers();
+        }
+
+        private void ContainerList_MouseClick(object? sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var focusedItem = this.containerList.FocusedItem;
+                if (focusedItem != null && focusedItem.Bounds.Contains(e.Location))
+                {
+                    this.containerContextMenu.Show(Cursor.Position);
+                }
+            }
         }
 
         private IEnumerable<int> GetSelectedIndexes()
@@ -128,6 +149,60 @@ namespace Docker.GUI
                 indexes.Add(selectedContainer.Index);
             }
             return indexes;
+        }
+
+        private void startContainerMenu_Click(object sender, EventArgs e)
+        {
+            var focusedItem = this.containerList.FocusedItem;
+            var index = focusedItem.Index;
+            if (_containers.ToList()[index].State == "paused")
+            {
+                containersService.UnpauseContainer(_containers.ToList()[index].ID);
+            }
+            else if (_containers.ToList()[index].State != "running")
+            {
+                containersService.StartContainer(_containers.ToList()[index].ID);
+            }
+
+            RefreshContainers();
+        }
+
+        private void stopContainerMenu_Click(object sender, EventArgs e)
+        {
+            var focusedItem = this.containerList.FocusedItem;
+            var index = focusedItem.Index;
+
+            containersService.StopContainer(_containers.ToList()[index].ID);
+
+            RefreshContainers();
+        }
+
+        private void pauseContainerMenu_Click(object sender, EventArgs e)
+        {
+            var focusedItem = this.containerList.FocusedItem;
+            var index = focusedItem.Index;
+
+            containersService.PauseContainer(_containers.ToList()[index].ID);
+
+            RefreshContainers();
+        }
+
+        private void deleteContainerMenu_Click(object sender, EventArgs e)
+        {
+            var focusedItem = this.containerList.FocusedItem;
+            var index = focusedItem.Index;
+
+            containersService.DeleteContainer(_containers.ToList()[index].ID);
+
+            RefreshContainers();
+        }
+
+        private void copyIdContainerMenu_Click(object sender, EventArgs e)
+        {
+            var focusedItem = this.containerList.FocusedItem;
+            var index = focusedItem.Index;
+
+            Clipboard.SetText(_containers.ToList()[index].ID);
         }
     }
 }
