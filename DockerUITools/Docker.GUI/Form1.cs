@@ -1,21 +1,19 @@
 using Docker.Models;
 using Docker.Services;
-using System;
-using System.Reflection;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Docker.GUI
 {
     public partial class Form1 : Form
     {
         private IEnumerable<Container> _containers = new List<Container>();
+        private string filter = string.Empty;
         private readonly ContainerServices containersService;
 
         public Form1()
         {
             InitializeComponent();
             this.containerList.MouseClick += ContainerList_MouseClick;
+            this.searchContainer.TextChanged += SearchContainer_TextChanged;
             containersService = new ContainerServices();
             RefreshContainers();
         }
@@ -32,17 +30,20 @@ namespace Docker.GUI
             }
         }
 
-        private void RefreshContainers()
+        private void RefreshContainers(bool getFreshData = true)
         {
-            _containers = containersService.GetContainers();
             string txt = string.Empty;
-
             var list = new List<ListViewItem>();
+            if (getFreshData) 
+            { 
+                _containers = containersService.GetContainers(); 
+            }
+
             _containers = _containers.OrderByDescending(x => x.State);
 
             containerList.Items.Clear();
 
-            foreach (var item in _containers)
+            foreach (var item in filter.Length > 0 ? _containers.Where(c => c.Names.IndexOf(this.searchContainer.Text) == 0) : _containers)
             {
                 var lvi = new ListViewItem();
                 lvi.SubItems.Add(item.Names);
@@ -203,6 +204,12 @@ namespace Docker.GUI
             var index = focusedItem.Index;
 
             Clipboard.SetText(_containers.ToList()[index].ID);
+        }
+
+        private void SearchContainer_TextChanged(object? sender, EventArgs e)
+        {
+            filter = this.searchContainer.Text;
+            RefreshContainers(false);
         }
     }
 }
