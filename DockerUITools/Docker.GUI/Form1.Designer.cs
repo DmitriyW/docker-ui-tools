@@ -52,6 +52,7 @@
             stop = new Button();
             pause = new Button();
             delete = new Button();
+            searchContainer = new TextBox();
             containerContextMenu.SuspendLayout();
             navigation.SuspendLayout();
             containerPage.SuspendLayout();
@@ -78,9 +79,9 @@
             containerList.ForeColor = SystemColors.WindowText;
             containerList.FullRowSelect = true;
             containerList.GridLines = true;
-            containerList.Location = new Point(6, 6);
+            containerList.Location = new Point(6, 58);
             containerList.Name = "containerList";
-            containerList.Size = new Size(1152, 412);
+            containerList.Size = new Size(1152, 360);
             containerList.SmallImageList = containerStates;
             containerList.TabIndex = 2;
             containerList.UseCompatibleStateImageBehavior = false;
@@ -182,7 +183,12 @@
             // 
             // containerPage
             // 
+            containerPage.Controls.Add(searchContainer);
             containerPage.Controls.Add(containerList);
+            containerPage.Controls.Add(delete);
+            containerPage.Controls.Add(pause);
+            containerPage.Controls.Add(start);
+            containerPage.Controls.Add(stop);
             containerPage.Location = new Point(4, 40);
             containerPage.Name = "containerPage";
             containerPage.Padding = new Padding(3);
@@ -210,9 +216,9 @@
             // 
             // start
             // 
-            start.Location = new Point(598, 12);
+            start.Location = new Point(654, 6);
             start.Name = "start";
-            start.Size = new Size(70, 42);
+            start.Size = new Size(109, 46);
             start.TabIndex = 4;
             start.Text = "Start";
             start.UseVisualStyleBackColor = true;
@@ -220,9 +226,9 @@
             // 
             // stop
             // 
-            stop.Location = new Point(750, 12);
+            stop.Location = new Point(884, 6);
             stop.Name = "stop";
-            stop.Size = new Size(70, 42);
+            stop.Size = new Size(109, 46);
             stop.TabIndex = 5;
             stop.Text = "Stop";
             stop.UseVisualStyleBackColor = true;
@@ -230,9 +236,9 @@
             // 
             // pause
             // 
-            pause.Location = new Point(674, 12);
+            pause.Location = new Point(769, 6);
             pause.Name = "pause";
-            pause.Size = new Size(70, 42);
+            pause.Size = new Size(109, 46);
             pause.TabIndex = 6;
             pause.Text = "Pause";
             pause.UseVisualStyleBackColor = true;
@@ -240,23 +246,26 @@
             // 
             // delete
             // 
-            delete.Location = new Point(876, 12);
+            delete.Location = new Point(1049, 6);
             delete.Name = "delete";
-            delete.Size = new Size(70, 42);
+            delete.Size = new Size(109, 46);
             delete.TabIndex = 7;
             delete.Text = "Delete";
             delete.UseVisualStyleBackColor = true;
             delete.Click += delete_Click;
+            // 
+            // searchContainer
+            // 
+            searchContainer.Location = new Point(68, 14);
+            searchContainer.Name = "searchContainer";
+            searchContainer.Size = new Size(231, 38);
+            searchContainer.TabIndex = 8;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1196, 540);
-            Controls.Add(delete);
-            Controls.Add(pause);
-            Controls.Add(stop);
-            Controls.Add(start);
             Controls.Add(navigation);
             Controls.Add(refresh);
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -266,6 +275,7 @@
             containerContextMenu.ResumeLayout(false);
             navigation.ResumeLayout(false);
             containerPage.ResumeLayout(false);
+            containerPage.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -293,5 +303,6 @@
         private ToolStripMenuItem deleteContainerMenu;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripMenuItem copyIdContainerMenu;
+        private TextBox searchContainer;
     }
 }
