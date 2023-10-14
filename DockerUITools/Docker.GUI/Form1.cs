@@ -14,11 +14,39 @@ namespace Docker.GUI
             InitializeComponent();
             this.containerList.MouseClick += ContainerList_MouseClick;
             this.searchContainer.TextChanged += SearchContainer_TextChanged;
+            this.checkAll.Click += CheckAll_Click;
+            this.containerList.ItemChecked += ContainerList_ItemChecked;
+
             containersService = new ContainerServices();
             RefreshContainers();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void CheckAll_Click(object? sender, EventArgs e)
+        {
+            ChangeCheckboxStateForContainers(this.checkAll.Checked);
+        }
+
+        private void ContainerList_ItemChecked(object? sender, ItemCheckedEventArgs e)
+        {
+            if (this.containerList.CheckedItems.Count == this.containerList.Items.Count)
+            {
+                this.checkAll.Checked = true;
+            }
+            else
+            {
+                this.checkAll.Checked = false;
+            }
+        }
+
+        private void ChangeCheckboxStateForContainers(bool state)
+        {
+            foreach (ListViewItem item in this.containerList.Items)
+            {
+                item.Checked = state;
+            }
+        }
+
+        private void refresh_Click(object sender, EventArgs e)
         {
             switch (this.navigation.SelectedTab.Name)
             {
@@ -72,11 +100,6 @@ namespace Docker.GUI
                 default:
                     return 0;
             }
-        }
-
-        private void containerList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void start_Click(object sender, EventArgs e)

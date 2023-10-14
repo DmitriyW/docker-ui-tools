@@ -49,6 +49,7 @@
             copyIdContainerMenu = new ToolStripMenuItem();
             navigation = new TabControl();
             containerPage = new TabPage();
+            checkAll = new CheckBox();
             searchContainer = new TextBox();
             delete = new Button();
             pause = new Button();
@@ -63,13 +64,13 @@
             // refresh
             // 
             refresh.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            refresh.Location = new Point(1156, 12);
+            refresh.Location = new Point(1161, 6);
             refresh.Name = "refresh";
             refresh.Size = new Size(105, 42);
             refresh.TabIndex = 0;
             refresh.Text = "Refresh";
             refresh.UseVisualStyleBackColor = true;
-            refresh.Click += button1_Click;
+            refresh.Click += refresh_Click;
             // 
             // containerList
             // 
@@ -83,12 +84,11 @@
             containerList.GridLines = true;
             containerList.Location = new Point(6, 58);
             containerList.Name = "containerList";
-            containerList.Size = new Size(1230, 360);
+            containerList.Size = new Size(1260, 421);
             containerList.SmallImageList = containerStates;
             containerList.TabIndex = 2;
             containerList.UseCompatibleStateImageBehavior = false;
             containerList.View = View.Details;
-            containerList.SelectedIndexChanged += containerList_SelectedIndexChanged;
             // 
             // icon
             // 
@@ -188,16 +188,18 @@
             navigation.Controls.Add(containerPage);
             navigation.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold, GraphicsUnit.Point);
             navigation.ImageList = navigationImgs;
-            navigation.Location = new Point(12, 60);
+            navigation.Location = new Point(12, 12);
             navigation.Multiline = true;
             navigation.Name = "navigation";
             navigation.SelectedIndex = 0;
-            navigation.Size = new Size(1250, 468);
+            navigation.Size = new Size(1280, 529);
             navigation.TabIndex = 3;
             // 
             // containerPage
             // 
+            containerPage.Controls.Add(checkAll);
             containerPage.Controls.Add(searchContainer);
+            containerPage.Controls.Add(refresh);
             containerPage.Controls.Add(containerList);
             containerPage.Controls.Add(delete);
             containerPage.Controls.Add(pause);
@@ -206,10 +208,19 @@
             containerPage.Location = new Point(4, 40);
             containerPage.Name = "containerPage";
             containerPage.Padding = new Padding(3);
-            containerPage.Size = new Size(1242, 424);
+            containerPage.Size = new Size(1272, 485);
             containerPage.TabIndex = 0;
             containerPage.Text = "Containers";
             containerPage.UseVisualStyleBackColor = true;
+            // 
+            // checkAll
+            // 
+            checkAll.AutoSize = true;
+            checkAll.Location = new Point(12, 25);
+            checkAll.Name = "checkAll";
+            checkAll.Size = new Size(18, 17);
+            checkAll.TabIndex = 9;
+            checkAll.UseVisualStyleBackColor = true;
             // 
             // searchContainer
             // 
@@ -220,42 +231,50 @@
             // 
             // delete
             // 
-            delete.Location = new Point(1049, 6);
+            delete.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            delete.BackColor = Color.LightSalmon;
+            delete.Location = new Point(563, 6);
             delete.Name = "delete";
             delete.Size = new Size(109, 46);
             delete.TabIndex = 7;
             delete.Text = "Delete";
-            delete.UseVisualStyleBackColor = true;
+            delete.UseVisualStyleBackColor = false;
             delete.Click += delete_Click;
             // 
             // pause
             // 
-            pause.Location = new Point(769, 6);
+            pause.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            pause.BackColor = SystemColors.GradientActiveCaption;
+            pause.Location = new Point(853, 6);
             pause.Name = "pause";
-            pause.Size = new Size(109, 46);
+            pause.Size = new Size(87, 46);
             pause.TabIndex = 6;
             pause.Text = "Pause";
-            pause.UseVisualStyleBackColor = true;
+            pause.UseVisualStyleBackColor = false;
             pause.Click += pause_Click;
             // 
             // start
             // 
-            start.Location = new Point(654, 6);
+            start.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            start.BackColor = SystemColors.GradientActiveCaption;
+            start.Location = new Point(760, 6);
             start.Name = "start";
-            start.Size = new Size(109, 46);
+            start.Size = new Size(87, 46);
             start.TabIndex = 4;
             start.Text = "Start";
-            start.UseVisualStyleBackColor = true;
+            start.UseVisualStyleBackColor = false;
             start.Click += start_Click;
             // 
             // stop
             // 
-            stop.Location = new Point(884, 6);
+            stop.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            stop.BackColor = SystemColors.GradientActiveCaption;
+            stop.Location = new Point(946, 6);
             stop.Name = "stop";
-            stop.Size = new Size(109, 46);
+            stop.Size = new Size(87, 46);
             stop.TabIndex = 5;
             stop.Text = "Stop";
-            stop.UseVisualStyleBackColor = true;
+            stop.UseVisualStyleBackColor = false;
             stop.Click += stop_Click;
             // 
             // navigationImgs
@@ -279,9 +298,8 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1274, 540);
+            ClientSize = new Size(1304, 553);
             Controls.Add(navigation);
-            Controls.Add(refresh);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
@@ -320,5 +338,6 @@
         private TextBox searchContainer;
         private ToolStripMenuItem restartContainerMenu;
         private ColumnHeader lastStarted;
+        private CheckBox checkAll;
     }
 }
