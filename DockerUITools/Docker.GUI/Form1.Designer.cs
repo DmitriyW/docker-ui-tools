@@ -30,7 +30,7 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            button1 = new Button();
+            refresh = new Button();
             containerList = new ListView();
             icon = new ColumnHeader();
             containerName = new ColumnHeader();
@@ -41,27 +41,32 @@
             navigation = new TabControl();
             containerPage = new TabPage();
             imagePage = new TabPage();
-            navigationImgs = new ImageList(components);
             volumePage = new TabPage();
+            navigationImgs = new ImageList(components);
+            start = new Button();
+            stop = new Button();
+            pause = new Button();
+            delete = new Button();
             navigation.SuspendLayout();
             containerPage.SuspendLayout();
             SuspendLayout();
             // 
-            // button1
+            // refresh
             // 
-            button1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            button1.Location = new Point(1078, 12);
-            button1.Name = "button1";
-            button1.Size = new Size(105, 42);
-            button1.TabIndex = 0;
-            button1.Text = "Refresh";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            refresh.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            refresh.Location = new Point(1078, 12);
+            refresh.Name = "refresh";
+            refresh.Size = new Size(105, 42);
+            refresh.TabIndex = 0;
+            refresh.Text = "Refresh";
+            refresh.UseVisualStyleBackColor = true;
+            refresh.Click += button1_Click;
             // 
             // containerList
             // 
             containerList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             containerList.BackColor = SystemColors.GradientInactiveCaption;
+            containerList.CheckBoxes = true;
             containerList.Columns.AddRange(new ColumnHeader[] { icon, containerName, image, status, ports });
             containerList.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold, GraphicsUnit.Point);
             containerList.ForeColor = SystemColors.WindowText;
@@ -79,7 +84,6 @@
             // icon
             // 
             icon.Text = "";
-            icon.Width = 40;
             // 
             // containerName
             // 
@@ -108,6 +112,7 @@
             containerStates.TransparentColor = Color.Transparent;
             containerStates.Images.SetKeyName(0, "2312798.png");
             containerStates.Images.SetKeyName(1, "2312889.png");
+            containerStates.Images.SetKeyName(2, "oie_transparent.png");
             // 
             // navigation
             // 
@@ -127,7 +132,6 @@
             // containerPage
             // 
             containerPage.Controls.Add(containerList);
-            containerPage.ImageIndex = 1;
             containerPage.Location = new Point(4, 40);
             containerPage.Name = "containerPage";
             containerPage.Padding = new Padding(3);
@@ -138,18 +142,27 @@
             // 
             // imagePage
             // 
-            imagePage.ImageIndex = 5;
-            imagePage.Location = new Point(4, 29);
+            imagePage.Location = new Point(4, 40);
             imagePage.Name = "imagePage";
             imagePage.Padding = new Padding(3);
-            imagePage.Size = new Size(437, 211);
+            imagePage.Size = new Size(1164, 424);
             imagePage.TabIndex = 1;
             imagePage.Text = "Images";
             imagePage.UseVisualStyleBackColor = true;
             // 
+            // volumePage
+            // 
+            volumePage.Location = new Point(4, 40);
+            volumePage.Name = "volumePage";
+            volumePage.Padding = new Padding(3);
+            volumePage.Size = new Size(1164, 424);
+            volumePage.TabIndex = 2;
+            volumePage.Text = "Volumes";
+            volumePage.UseVisualStyleBackColor = true;
+            // 
             // navigationImgs
             // 
-            navigationImgs.ColorDepth = ColorDepth.Depth8Bit;
+            navigationImgs.ColorDepth = ColorDepth.Depth32Bit;
             navigationImgs.ImageStream = (ImageListStreamer)resources.GetObject("navigationImgs.ImageStream");
             navigationImgs.TransparentColor = Color.Transparent;
             navigationImgs.Images.SetKeyName(0, "8754c45c0adf4780dabf04f1bd6684af.jpg");
@@ -164,24 +177,57 @@
             navigationImgs.Images.SetKeyName(9, "image_processing20210616-28547-1u2ox9e.png");
             navigationImgs.Images.SetKeyName(10, "png-transparent-docker-computer-icons-logo-others-miscellaneous-text-logo.png");
             // 
-            // volumePage
+            // start
             // 
-            volumePage.ImageIndex = 4;
-            volumePage.Location = new Point(4, 29);
-            volumePage.Name = "volumePage";
-            volumePage.Padding = new Padding(3);
-            volumePage.Size = new Size(437, 211);
-            volumePage.TabIndex = 2;
-            volumePage.Text = "Volumes";
-            volumePage.UseVisualStyleBackColor = true;
+            start.Location = new Point(598, 12);
+            start.Name = "start";
+            start.Size = new Size(70, 42);
+            start.TabIndex = 4;
+            start.Text = "Start";
+            start.UseVisualStyleBackColor = true;
+            start.Click += start_Click;
+            // 
+            // stop
+            // 
+            stop.Location = new Point(750, 12);
+            stop.Name = "stop";
+            stop.Size = new Size(70, 42);
+            stop.TabIndex = 5;
+            stop.Text = "Stop";
+            stop.UseVisualStyleBackColor = true;
+            stop.Click += stop_Click;
+            // 
+            // pause
+            // 
+            pause.Location = new Point(674, 12);
+            pause.Name = "pause";
+            pause.Size = new Size(70, 42);
+            pause.TabIndex = 6;
+            pause.Text = "Pause";
+            pause.UseVisualStyleBackColor = true;
+            pause.Click += pause_Click;
+            // 
+            // delete
+            // 
+            delete.Location = new Point(876, 12);
+            delete.Name = "delete";
+            delete.Size = new Size(70, 42);
+            delete.TabIndex = 7;
+            delete.Text = "Delete";
+            delete.UseVisualStyleBackColor = true;
+            delete.Click += delete_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1196, 540);
+            Controls.Add(delete);
+            Controls.Add(pause);
+            Controls.Add(stop);
+            Controls.Add(start);
             Controls.Add(navigation);
-            Controls.Add(button1);
+            Controls.Add(refresh);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
@@ -193,7 +239,7 @@
 
         #endregion
 
-        private Button button1;
+        private Button refresh;
         private ListView containerList;
         private ColumnHeader containerName;
         private ColumnHeader image;
@@ -206,5 +252,9 @@
         private TabPage imagePage;
         private ImageList navigationImgs;
         private TabPage volumePage;
+        private Button start;
+        private Button stop;
+        private Button pause;
+        private Button delete;
     }
 }

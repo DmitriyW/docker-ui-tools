@@ -4,7 +4,7 @@ public class Container
 {
     public string Command { get; set; }
     public string CreatedAt { get; set; }
-    public string Id { get; set; }
+    public string ID { get; set; }
     public string Image { get; set; }
     public string Labels { get; set; }
     public string LocalVolumes { get; set; }
