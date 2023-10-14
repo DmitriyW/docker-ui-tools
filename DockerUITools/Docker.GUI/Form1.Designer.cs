@@ -40,8 +40,6 @@
             containerStates = new ImageList(components);
             navigation = new TabControl();
             containerPage = new TabPage();
-            imagePage = new TabPage();
-            volumePage = new TabPage();
             navigationImgs = new ImageList(components);
             start = new Button();
             stop = new Button();
@@ -118,8 +116,6 @@
             // 
             navigation.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             navigation.Controls.Add(containerPage);
-            navigation.Controls.Add(imagePage);
-            navigation.Controls.Add(volumePage);
             navigation.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold, GraphicsUnit.Point);
             navigation.ImageList = navigationImgs;
             navigation.Location = new Point(12, 60);
@@ -139,26 +135,6 @@
             containerPage.TabIndex = 0;
             containerPage.Text = "Containers";
             containerPage.UseVisualStyleBackColor = true;
-            // 
-            // imagePage
-            // 
-            imagePage.Location = new Point(4, 40);
-            imagePage.Name = "imagePage";
-            imagePage.Padding = new Padding(3);
-            imagePage.Size = new Size(1164, 424);
-            imagePage.TabIndex = 1;
-            imagePage.Text = "Images";
-            imagePage.UseVisualStyleBackColor = true;
-            // 
-            // volumePage
-            // 
-            volumePage.Location = new Point(4, 40);
-            volumePage.Name = "volumePage";
-            volumePage.Padding = new Padding(3);
-            volumePage.Size = new Size(1164, 424);
-            volumePage.TabIndex = 2;
-            volumePage.Text = "Volumes";
-            volumePage.UseVisualStyleBackColor = true;
             // 
             // navigationImgs
             // 
@@ -249,9 +225,7 @@
         private ImageList containerStates;
         private TabControl navigation;
         private TabPage containerPage;
-        private TabPage imagePage;
         private ImageList navigationImgs;
-        private TabPage volumePage;
         private Button start;
         private Button stop;
         private Button pause;
