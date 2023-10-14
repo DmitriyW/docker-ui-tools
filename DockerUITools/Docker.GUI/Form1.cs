@@ -19,7 +19,8 @@ namespace Docker.GUI
             this.containerList.ItemChecked += ContainerList_ItemChecked;
 
             containersService = new ContainerServices();
-            RefreshContainers();
+            this.refreshContainerList.Enabled = false;
+            RefreshContainersAsync();
             actionBtnState();
         }
 
@@ -85,24 +86,38 @@ namespace Docker.GUI
             switch (this.navigation.SelectedTab.Name)
             {
                 case "containerPage":
-                    RefreshContainers();
+                    this.refreshContainerList.Enabled = false;
+                    RefreshContainersAsync();
                     break;
                 default:
                     break;
             }
         }
 
-        private void RefreshContainers(bool getFreshData = true)
+        private async Task RefreshContainersAsync(bool getFreshData = true)
         {
-            string txt = string.Empty;
-            var list = new List<ListViewItem>();
             if (getFreshData)
             {
-                _containers = containersService.GetContainers().ToList();
+                var getContainers = new Action<IEnumerable<Container>>(x =>
+                {
+                    _containers = x.ToList();
+                    _containers = _containers.OrderByDescending(x => x.State).ToList();
+                    ViewContainers();
+                    this.refreshContainerList.Enabled = true;
+                });
+                await containersService.GetContainersAsync(new Progress<IEnumerable<Container>>(getContainers));
             }
+            else
+            {
+                _containers = _containers.OrderByDescending(x => x.State).ToList();
+                ViewContainers();
+                this.refreshContainerList.Enabled = true;
+            }
+        }
 
-            _containers = _containers.OrderByDescending(x => x.State).ToList();
-
+        private void ViewContainers()
+        {
+            var list = new List<ListViewItem>();
             containerList.Items.Clear();
 
             foreach (var item in filter.Length > 0 ? _containers.Where(c => c.Names.IndexOf(this.searchContainer.Text) == 0) : _containers)
@@ -138,54 +153,78 @@ namespace Docker.GUI
 
         private void start_Click(object sender, EventArgs e)
         {
-            startContainer();
-
-            RefreshContainers();
+            startContainerAsync();
         }
 
-        private void startContainer()
+        private async Task startContainerAsync()
         {
+            var startResult = new Action<string>(x =>
+            {
+                RefreshContainersAsync();
+            });
+
             foreach (int index in GetSelectedIndexes())
             {
                 if (_containers.ToList()[index].State == "paused")
                 {
-                    containersService.UnpauseContainer(_containers.ToList()[index].ID);
+                    await containersService.UnpauseContainerAsync(new Progress<string>(startResult), _containers.ToList()[index].ID);
                 }
                 else if (_containers.ToList()[index].State != "running")
                 {
-                    containersService.StartContainer(_containers.ToList()[index].ID);
+                    await containersService.StartContainerAsync(new Progress<string>(startResult), _containers.ToList()[index].ID);
                 }
             }
         }
 
         private void stop_Click(object sender, EventArgs e)
         {
+            StopContainers();
+        }
+
+        private async Task StopContainers()
+        {
+            var stopResult = new Action<string>(x =>
+            {
+                RefreshContainersAsync();
+            });
             foreach (int index in GetSelectedIndexes())
             {
-                containersService.StopContainer(_containers.ToList()[index].ID);
+                await containersService.StopContainerAsync(new Progress<string>(stopResult), _containers.ToList()[index].ID);
             }
-
-            RefreshContainers();
         }
 
         private void pause_Click(object sender, EventArgs e)
         {
+            PauseContainers();
+        }
+
+        private async Task PauseContainers()
+        {
+            var pauseResult = new Action<string>(x =>
+            {
+                RefreshContainersAsync();
+            });
             foreach (int index in GetSelectedIndexes())
             {
-                containersService.PauseContainer(_containers.ToList()[index].ID);
+                await containersService.PauseContainerAsync(new Progress<string>(pauseResult), _containers.ToList()[index].ID);
             }
-
-            RefreshContainers();
         }
 
         private void delete_Click(object sender, EventArgs e)
         {
+            DeleteContainers();
+        }
+
+        private async Task DeleteContainers()
+        {
+            var deleteResult = new Action<string>(x =>
+            {
+                RefreshContainersAsync();
+            });
             foreach (int index in GetSelectedIndexes())
             {
-                containersService.DeleteContainer(_containers.ToList()[index].ID);
+                await containersService.DeleteContainerAsync(new Progress<string>(deleteResult), _containers.ToList()[index].ID);
             }
-
-            RefreshContainers();
         }
 
         private void ContainerList_MouseClick(object? sender, MouseEventArgs e)
@@ -210,7 +249,7 @@ namespace Docker.GUI
                 indexes.Add(selectedContainer.Index);
                 _selectedContainers.Add(_containers[selectedContainer.Index].ID);
             }
-            
+
             return indexes;
         }
 
@@ -218,16 +257,20 @@ namespace Docker.GUI
         {
             var focusedItem = this.containerList.FocusedItem;
             var index = focusedItem.Index;
+
+            var startResult = new Action<string>(x =>
+            {
+                RefreshContainersAsync();
+            });
+
             if (_containers.ToList()[index].State == "paused")
             {
-                containersService.UnpauseContainer(_containers.ToList()[index].ID);
+                containersService.UnpauseContainerAsync(new Progress<string>(startResult), _containers.ToList()[index].ID);
             }
             else if (_containers.ToList()[index].State != "running")
             {
-                containersService.StartContainer(_containers.ToList()[index].ID);
+                containersService.StartContainerAsync(new Progress<string>(startResult), _containers.ToList()[index].ID);
             }
-
-            RefreshContainers();
         }
 
         private void restartContainerMenu_Click(object sender, EventArgs e)
@@ -235,9 +278,17 @@ namespace Docker.GUI
             var focusedItem = this.containerList.FocusedItem;
             var index = focusedItem.Index;
 
-            containersService.RestartContainer(_containers.ToList()[index].ID);
+            restartContainerAsync(index);
+        }
 
-            RefreshContainers();
+        private async Task restartContainerAsync(int index)
+        {
+            var restartResult = new Action<string>(x =>
+            {
+                RefreshContainersAsync();
+            });
+
+            containersService.RestartContainerAsync(new Progress<string>(restartResult), _containers.ToList()[index].ID);
         }
 
         private void stopContainerMenu_Click(object sender, EventArgs e)
@@ -245,29 +296,48 @@ namespace Docker.GUI
             var focusedItem = this.containerList.FocusedItem;
             var index = focusedItem.Index;
 
-            containersService.StopContainer(_containers.ToList()[index].ID);
+            StopContainer(index);
+        }
 
-            RefreshContainers();
+        private async Task StopContainer(int index)
+        {
+            var stopResult = new Action<string>(x =>
+            {
+                RefreshContainersAsync();
+            });
+            await containersService.StopContainerAsync(new Progress<string>(stopResult), _containers.ToList()[index].ID);
         }
 
         private void pauseContainerMenu_Click(object sender, EventArgs e)
         {
             var focusedItem = this.containerList.FocusedItem;
             var index = focusedItem.Index;
+            PauseContainer(index);
+        }
 
-            containersService.PauseContainer(_containers.ToList()[index].ID);
-
-            RefreshContainers();
+        private async Task PauseContainer(int index)
+        {
+            var pauseResult = new Action<string>(x =>
+            {
+                RefreshContainersAsync();
+            });
+            await containersService.PauseContainerAsync(new Progress<string>(pauseResult), _containers.ToList()[index].ID);
         }
 
         private void deleteContainerMenu_Click(object sender, EventArgs e)
         {
             var focusedItem = this.containerList.FocusedItem;
             var index = focusedItem.Index;
+            DeleteContainer(index);
+        }
 
-            containersService.DeleteContainer(_containers.ToList()[index].ID);
-
-            RefreshContainers();
+        private async Task DeleteContainer(int index)
+        {
+            var deleteResult = new Action<string>(x =>
+            {
+                RefreshContainersAsync();
+            });
+            await containersService.DeleteContainerAsync(new Progress<string>(deleteResult), _containers.ToList()[index].ID);
         }
 
         private void copyIdContainerMenu_Click(object sender, EventArgs e)
@@ -281,7 +351,7 @@ namespace Docker.GUI
         private void SearchContainer_TextChanged(object? sender, EventArgs e)
         {
             filter = this.searchContainer.Text;
-            RefreshContainers(false);
+            RefreshContainersAsync(false);
         }
     }
 }
