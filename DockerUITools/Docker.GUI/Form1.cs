@@ -50,6 +50,7 @@ namespace Docker.GUI
                 lvi.SubItems.Add(item.Image);
                 lvi.SubItems.Add(item.State.ToString());
                 lvi.SubItems.Add(item.Ports);
+                lvi.SubItems.Add(item.Status);
                 lvi.ImageIndex = GetContainerImage(item.State.Trim().ToLower());
                 lvi.ForeColor = item.State.Trim().ToLower() == "exited" ? SystemColors.GrayText : SystemColors.WindowText;
                 list.Add(lvi);

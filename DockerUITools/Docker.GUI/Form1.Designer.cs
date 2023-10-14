@@ -37,12 +37,14 @@
             image = new ColumnHeader();
             status = new ColumnHeader();
             ports = new ColumnHeader();
+            lastStarted = new ColumnHeader();
             containerStates = new ImageList(components);
             containerContextMenu = new ContextMenuStrip(components);
             startContainerMenu = new ToolStripMenuItem();
             stopContainerMenu = new ToolStripMenuItem();
             pauseContainerMenu = new ToolStripMenuItem();
             deleteContainerMenu = new ToolStripMenuItem();
+            restartContainerMenu = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
             copyIdContainerMenu = new ToolStripMenuItem();
             navigation = new TabControl();
@@ -53,7 +55,6 @@
             start = new Button();
             stop = new Button();
             navigationImgs = new ImageList(components);
-            restartContainerMenu = new ToolStripMenuItem();
             containerContextMenu.SuspendLayout();
             navigation.SuspendLayout();
             containerPage.SuspendLayout();
@@ -62,7 +63,7 @@
             // refresh
             // 
             refresh.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            refresh.Location = new Point(1078, 12);
+            refresh.Location = new Point(1156, 12);
             refresh.Name = "refresh";
             refresh.Size = new Size(105, 42);
             refresh.TabIndex = 0;
@@ -75,14 +76,14 @@
             containerList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             containerList.BackColor = SystemColors.GradientInactiveCaption;
             containerList.CheckBoxes = true;
-            containerList.Columns.AddRange(new ColumnHeader[] { icon, containerName, image, status, ports });
+            containerList.Columns.AddRange(new ColumnHeader[] { icon, containerName, image, status, ports, lastStarted });
             containerList.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold, GraphicsUnit.Point);
             containerList.ForeColor = SystemColors.WindowText;
             containerList.FullRowSelect = true;
             containerList.GridLines = true;
             containerList.Location = new Point(6, 58);
             containerList.Name = "containerList";
-            containerList.Size = new Size(1152, 360);
+            containerList.Size = new Size(1230, 360);
             containerList.SmallImageList = containerStates;
             containerList.TabIndex = 2;
             containerList.UseCompatibleStateImageBehavior = false;
@@ -113,6 +114,11 @@
             ports.Text = "Ports";
             ports.Width = 300;
             // 
+            // lastStarted
+            // 
+            lastStarted.Text = "LastStarted";
+            lastStarted.Width = 200;
+            // 
             // containerStates
             // 
             containerStates.ColorDepth = ColorDepth.Depth32Bit;
@@ -127,45 +133,52 @@
             containerContextMenu.ImageScalingSize = new Size(20, 20);
             containerContextMenu.Items.AddRange(new ToolStripItem[] { startContainerMenu, stopContainerMenu, pauseContainerMenu, deleteContainerMenu, restartContainerMenu, toolStripSeparator1, copyIdContainerMenu });
             containerContextMenu.Name = "ContainerContextMenu";
-            containerContextMenu.Size = new Size(211, 182);
+            containerContextMenu.Size = new Size(196, 154);
             // 
             // startContainerMenu
             // 
             startContainerMenu.Name = "startContainerMenu";
-            startContainerMenu.Size = new Size(210, 24);
+            startContainerMenu.Size = new Size(195, 24);
             startContainerMenu.Text = "Start";
             startContainerMenu.Click += startContainerMenu_Click;
             // 
             // stopContainerMenu
             // 
             stopContainerMenu.Name = "stopContainerMenu";
-            stopContainerMenu.Size = new Size(210, 24);
+            stopContainerMenu.Size = new Size(195, 24);
             stopContainerMenu.Text = "Stop";
             stopContainerMenu.Click += stopContainerMenu_Click;
             // 
             // pauseContainerMenu
             // 
             pauseContainerMenu.Name = "pauseContainerMenu";
-            pauseContainerMenu.Size = new Size(210, 24);
+            pauseContainerMenu.Size = new Size(195, 24);
             pauseContainerMenu.Text = "Pause";
             pauseContainerMenu.Click += pauseContainerMenu_Click;
             // 
             // deleteContainerMenu
             // 
             deleteContainerMenu.Name = "deleteContainerMenu";
-            deleteContainerMenu.Size = new Size(210, 24);
+            deleteContainerMenu.Size = new Size(195, 24);
             deleteContainerMenu.Text = "Delete";
             deleteContainerMenu.Click += deleteContainerMenu_Click;
+            // 
+            // restartContainerMenu
+            // 
+            restartContainerMenu.Name = "restartContainerMenu";
+            restartContainerMenu.Size = new Size(195, 24);
+            restartContainerMenu.Text = "Restart";
+            restartContainerMenu.Click += restartContainerMenu_Click;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(207, 6);
+            toolStripSeparator1.Size = new Size(192, 6);
             // 
             // copyIdContainerMenu
             // 
             copyIdContainerMenu.Name = "copyIdContainerMenu";
-            copyIdContainerMenu.Size = new Size(210, 24);
+            copyIdContainerMenu.Size = new Size(195, 24);
             copyIdContainerMenu.Text = "Copy container Id";
             copyIdContainerMenu.Click += copyIdContainerMenu_Click;
             // 
@@ -179,7 +192,7 @@
             navigation.Multiline = true;
             navigation.Name = "navigation";
             navigation.SelectedIndex = 0;
-            navigation.Size = new Size(1172, 468);
+            navigation.Size = new Size(1250, 468);
             navigation.TabIndex = 3;
             // 
             // containerPage
@@ -193,7 +206,7 @@
             containerPage.Location = new Point(4, 40);
             containerPage.Name = "containerPage";
             containerPage.Padding = new Padding(3);
-            containerPage.Size = new Size(1164, 424);
+            containerPage.Size = new Size(1242, 424);
             containerPage.TabIndex = 0;
             containerPage.Text = "Containers";
             containerPage.UseVisualStyleBackColor = true;
@@ -262,18 +275,11 @@
             navigationImgs.Images.SetKeyName(9, "image_processing20210616-28547-1u2ox9e.png");
             navigationImgs.Images.SetKeyName(10, "png-transparent-docker-computer-icons-logo-others-miscellaneous-text-logo.png");
             // 
-            // restartContainerMenu
-            // 
-            restartContainerMenu.Name = "restartContainerMenu";
-            restartContainerMenu.Size = new Size(210, 24);
-            restartContainerMenu.Text = "Restart";
-            restartContainerMenu.Click += restartContainerMenu_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1196, 540);
+            ClientSize = new Size(1274, 540);
             Controls.Add(navigation);
             Controls.Add(refresh);
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -313,5 +319,6 @@
         private ToolStripMenuItem copyIdContainerMenu;
         private TextBox searchContainer;
         private ToolStripMenuItem restartContainerMenu;
+        private ColumnHeader lastStarted;
     }
 }
