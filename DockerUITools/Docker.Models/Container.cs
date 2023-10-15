@@ -16,4 +16,5 @@ public class Container
     public string Size { get; set; }
     public string State { get; set; }
     public string Status { get; set; }
+    public string ComposeProject { get; set; }
 }

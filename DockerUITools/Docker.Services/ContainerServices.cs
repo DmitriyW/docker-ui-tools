@@ -18,6 +18,17 @@ public class ContainerServices
 
             var jsonHelper = new JsonHelper<Container>();
             var containers = jsonHelper.ConvertTo(result);
+
+            foreach (var container in containers)
+            {
+                var label = container.Labels.Split(',').FirstOrDefault(x => x.Contains("com.docker.compose.project="));
+                if (label != null)
+                {
+                    container.ComposeProject = label.Replace("com.docker.compose.project=", string.Empty);
+                }
+            }
+            containers = containers.OrderBy(x => x.ComposeProject).OrderBy(x => x.Names);
+
             progress.Report(containers);
         });
     }
