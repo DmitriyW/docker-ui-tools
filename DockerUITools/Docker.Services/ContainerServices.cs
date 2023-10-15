@@ -80,4 +80,12 @@ public class ContainerServices
                         .RunCommand("docker", $"rm {containerId}")
                         .ToString());
             });
+
+    public async Task GetContainerLogsAsync(IProgress<string> progress, string containerId)
+        => await Task.Run(() =>
+            {
+                progress.Report(CommandRunner
+                        .RunCommand("docker", $"logs {containerId}")
+                        .ToString());
+            });
 }

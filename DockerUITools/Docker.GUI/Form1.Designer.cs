@@ -61,6 +61,8 @@
             imagePage = new TabPage();
             imagePage1 = new ImagePage();
             navigationImgs = new ImageList(components);
+            viewLogs = new ToolStripMenuItem();
+            toolStripSeparator2 = new ToolStripSeparator();
             containerContextMenu.SuspendLayout();
             navigation.SuspendLayout();
             containerPage.SuspendLayout();
@@ -141,54 +143,54 @@
             // containerContextMenu
             // 
             containerContextMenu.ImageScalingSize = new Size(20, 20);
-            containerContextMenu.Items.AddRange(new ToolStripItem[] { startContainerMenu, stopContainerMenu, pauseContainerMenu, deleteContainerMenu, restartContainerMenu, toolStripSeparator1, copyIdContainerMenu });
+            containerContextMenu.Items.AddRange(new ToolStripItem[] { startContainerMenu, stopContainerMenu, pauseContainerMenu, deleteContainerMenu, restartContainerMenu, toolStripSeparator1, copyIdContainerMenu, toolStripSeparator2, viewLogs });
             containerContextMenu.Name = "ContainerContextMenu";
-            containerContextMenu.Size = new Size(196, 154);
+            containerContextMenu.Size = new Size(211, 212);
             // 
             // startContainerMenu
             // 
             startContainerMenu.Name = "startContainerMenu";
-            startContainerMenu.Size = new Size(195, 24);
+            startContainerMenu.Size = new Size(210, 24);
             startContainerMenu.Text = "Start";
             startContainerMenu.Click += startContainerMenu_Click;
             // 
             // stopContainerMenu
             // 
             stopContainerMenu.Name = "stopContainerMenu";
-            stopContainerMenu.Size = new Size(195, 24);
+            stopContainerMenu.Size = new Size(210, 24);
             stopContainerMenu.Text = "Stop";
             stopContainerMenu.Click += stopContainerMenu_Click;
             // 
             // pauseContainerMenu
             // 
             pauseContainerMenu.Name = "pauseContainerMenu";
-            pauseContainerMenu.Size = new Size(195, 24);
+            pauseContainerMenu.Size = new Size(210, 24);
             pauseContainerMenu.Text = "Pause";
             pauseContainerMenu.Click += pauseContainerMenu_Click;
             // 
             // deleteContainerMenu
             // 
             deleteContainerMenu.Name = "deleteContainerMenu";
-            deleteContainerMenu.Size = new Size(195, 24);
+            deleteContainerMenu.Size = new Size(210, 24);
             deleteContainerMenu.Text = "Delete";
             deleteContainerMenu.Click += deleteContainerMenu_Click;
             // 
             // restartContainerMenu
             // 
             restartContainerMenu.Name = "restartContainerMenu";
-            restartContainerMenu.Size = new Size(195, 24);
+            restartContainerMenu.Size = new Size(210, 24);
             restartContainerMenu.Text = "Restart";
             restartContainerMenu.Click += restartContainerMenu_Click;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(192, 6);
+            toolStripSeparator1.Size = new Size(207, 6);
             // 
             // copyIdContainerMenu
             // 
             copyIdContainerMenu.Name = "copyIdContainerMenu";
-            copyIdContainerMenu.Size = new Size(195, 24);
+            copyIdContainerMenu.Size = new Size(210, 24);
             copyIdContainerMenu.Text = "Copy container Id";
             copyIdContainerMenu.Click += copyIdContainerMenu_Click;
             // 
@@ -362,6 +364,18 @@
             navigationImgs.Images.SetKeyName(9, "image_processing20210616-28547-1u2ox9e.png");
             navigationImgs.Images.SetKeyName(10, "png-transparent-docker-computer-icons-logo-others-miscellaneous-text-logo.png");
             // 
+            // viewLogs
+            // 
+            viewLogs.Name = "viewLogs";
+            viewLogs.Size = new Size(210, 24);
+            viewLogs.Text = "View Logs";
+            viewLogs.Click += viewLogs_Click;
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(207, 6);
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -418,5 +432,7 @@
         private TreeView containerGroups;
         private SplitContainer splitContainer1;
         private Label selectedGroupLabel;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripMenuItem viewLogs;
     }
 }

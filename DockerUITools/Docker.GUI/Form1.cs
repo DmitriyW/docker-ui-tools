@@ -19,6 +19,7 @@ namespace Docker.GUI
             this.checkAll.Click += CheckAll_Click;
             this.containerList.ItemChecked += ContainerList_ItemChecked;
             this.containerGroups.NodeMouseClick += ContainerGroups_NodeMouseClick;
+            this.containerList.MouseDoubleClick += ContainerList_MouseDoubleClick;
 
             containersService = new ContainerServices();
             this.refreshContainerList.Enabled = false;
@@ -33,7 +34,7 @@ namespace Docker.GUI
             if (selectedNode != null)
             {
                 this.selectedGroupLabel.Text = selectedNode.Text;
-                currentGroup = selectedNode.Text == "Individual containers" ? 
+                currentGroup = selectedNode.Text == "Individual containers" ?
                     null : selectedNode.Text;
                 RefreshContainersAsync(false);
             }
@@ -271,6 +272,17 @@ namespace Docker.GUI
             }
         }
 
+        private void ContainerList_MouseDoubleClick(object? sender, MouseEventArgs e)
+        {
+            var focusedItem = this.containerList.FocusedItem;
+            if (focusedItem != null && focusedItem.Bounds.Contains(e.Location))
+            {
+                var index = focusedItem.Index;
+                var logWindow = new Logs(_containers.ToList()[index].ID, _containers.ToList()[index].Names);
+                logWindow.Show();
+            }
+        }
+
         private IEnumerable<int> GetSelectedIndexes()
         {
             _selectedContainers.Clear();
@@ -320,7 +332,7 @@ namespace Docker.GUI
                 RefreshContainersAsync();
             });
 
-            containersService.RestartContainerAsync(new Progress<string>(restartResult), _containers.ToList()[index].ID);
+            await containersService.RestartContainerAsync(new Progress<string>(restartResult), _containers.ToList()[index].ID);
         }
 
         private void stopContainerMenu_Click(object sender, EventArgs e)
@@ -384,6 +396,17 @@ namespace Docker.GUI
         {
             filter = this.searchContainer.Text;
             RefreshContainersAsync(false);
+        }
+
+        private void viewLogs_Click(object sender, EventArgs e)
+        {
+            var focusedItem = this.containerList.FocusedItem;
+            if (focusedItem != null)
+            {
+                var index = focusedItem.Index;
+                var logWindow = new Logs(_containers.ToList()[index].ID, _containers.ToList()[index].Names);
+                logWindow.Show();
+            }
         }
     }
 }
