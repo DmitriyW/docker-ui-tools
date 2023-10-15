@@ -7,6 +7,7 @@ namespace Docker.GUI
     {
         private IList<Container> _containers = new List<Container>();
         private string filter = string.Empty;
+        private string currentGroup = "All";
         private readonly ContainerServices containersService;
         private IList<string> _selectedContainers = new List<string>();
 
@@ -17,11 +18,50 @@ namespace Docker.GUI
             this.searchContainer.TextChanged += SearchContainer_TextChanged;
             this.checkAll.Click += CheckAll_Click;
             this.containerList.ItemChecked += ContainerList_ItemChecked;
+            this.containerGroups.NodeMouseClick += ContainerGroups_NodeMouseClick;
 
             containersService = new ContainerServices();
             this.refreshContainerList.Enabled = false;
             RefreshContainersAsync();
             actionBtnState();
+            this.selectedGroupLabel.Text = "All";
+        }
+
+        private void ContainerGroups_NodeMouseClick(object? sender, TreeNodeMouseClickEventArgs e)
+        {
+            var selectedNode = e.Node;
+            if (selectedNode != null)
+            {
+                this.selectedGroupLabel.Text = selectedNode.Text;
+                currentGroup = selectedNode.Text == "Individual containers" ? 
+                    null : selectedNode.Text;
+                RefreshContainersAsync(false);
+            }
+        }
+
+        private void viewGroups()
+        {
+            var groups = GetGroups();
+            this.containerGroups.Nodes.Clear();
+            this.containerGroups.Nodes.Add("All");
+            foreach (var group in groups)
+            {
+                this.containerGroups.Nodes[0].Nodes.Add(group == null ? "Individual containers" : group);
+            }
+            this.containerGroups.ExpandAll();
+        }
+
+        private IEnumerable<string> GetGroups()
+            => _containers.Select(c => c.ComposeProject).Distinct();
+
+        private IEnumerable<Container> FilteredList()
+        {
+            var list = filter.Length > 0 ? _containers.Where(c => c.Names.IndexOf(this.searchContainer.Text) == 0) : _containers;
+            if (currentGroup != "All")
+            {
+                list = list.Where(c => c.ComposeProject == currentGroup);
+            }
+            return list;
         }
 
         private void disableActionBtnState()
@@ -94,15 +134,14 @@ namespace Docker.GUI
                 var getContainers = new Action<IEnumerable<Container>>(x =>
                 {
                     _containers = x.ToList();
-                    _containers = _containers.OrderByDescending(x => x.State).ToList();
                     ViewContainers();
                     this.refreshContainerList.Enabled = true;
                 });
                 await containersService.GetContainersAsync(new Progress<IEnumerable<Container>>(getContainers));
+                viewGroups();
             }
             else
             {
-                _containers = _containers.OrderByDescending(x => x.State).ToList();
                 ViewContainers();
                 this.refreshContainerList.Enabled = true;
             }
@@ -113,7 +152,7 @@ namespace Docker.GUI
             var list = new List<ListViewItem>();
             containerList.Items.Clear();
 
-            foreach (var item in filter.Length > 0 ? _containers.Where(c => c.Names.IndexOf(this.searchContainer.Text) == 0) : _containers)
+            foreach (var item in FilteredList())
             {
                 var lvi = new ListViewItem();
                 lvi.Checked = _selectedContainers.Contains(item.ID);
