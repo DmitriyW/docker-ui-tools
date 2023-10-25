@@ -71,7 +71,7 @@ public class ContainerService : IContainerService
         => await Task.Run(() =>
             {
                 progress.Report(new CommandResult(containerId, CommandRunner
-                        .RunCommand(Commands.Docker, $"{Commands.Pause} {containerId}")
+                        .RunCommand(Commands.Docker, $"{Commands.Unpause} {containerId}")
                         .ToString()));
             });
 
