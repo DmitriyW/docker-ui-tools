@@ -7,9 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Docker.Abstractions\Docker.Abstractions.csproj" />
-    <ProjectReference Include="..\Docker.Constants\Docker.Constants.csproj" />
-    <ProjectReference Include="..\Docker.Helpers\Docker.Helpers.csproj" />
     <ProjectReference Include="..\Docker.Models\Docker.Models.csproj" />
   </ItemGroup>
 
