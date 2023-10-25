@@ -183,7 +183,7 @@ public partial class ContainerPage : UserControl
             lvi.SubItems.Add(item.Ports);
             lvi.SubItems.Add(item.Status);
             lvi.SubItems.Add(this._messages.ContainsKey(item.ID) ? this._messages[item.ID] : string.Empty);
-            lvi.ImageIndex = GetContainerImage(item.State.Trim().ToLower());
+            lvi.ImageIndex = GetContainerIconId(item.State.Trim().ToLower());
             lvi.ForeColor = item.State.Trim().ToLower() == containers.Running || 
                 item.State.Trim().ToLower() == containers.Paused ? 
                 SystemColors.WindowText : SystemColors.GrayText;
@@ -193,7 +193,7 @@ public partial class ContainerPage : UserControl
         this.containerList.Items.AddRange(list.ToArray());
     }
 
-    private int GetContainerImage(string state)
+    private int GetContainerIconId(string state)
     {
         switch (state)
         {
