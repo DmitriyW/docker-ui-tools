@@ -1,34 +1,33 @@
 ﻿using Docker.Services;
 
-namespace Docker.GUI
+namespace Docker.GUI;
+
+public partial class Logs : Form
 {
-    public partial class Logs : Form
+    private readonly ContainerService containersService;
+    private readonly string containerId;
+
+    public Logs(string containerId, string name)
     {
-        private readonly ContainerServices containersService;
-        private readonly string containerId;
+        InitializeComponent();
+        this.Text = name;
 
-        public Logs(string containerId, string name)
+        containersService = new ContainerService();
+        this.containerId = containerId;
+        ShowLogs();
+    }
+
+    private async Task ShowLogs()
+    {
+        var logs = new Action<string>(x =>
         {
-            InitializeComponent();
-            this.Text = name;
+            this.logTextBox.Text = x;
+        });
+        await containersService.GetContainerLogsAsync(new Progress<string>(logs), this.containerId);
+    }
 
-            containersService = new ContainerServices();
-            this.containerId = containerId;
-            ShowLogs();
-        }
-
-        private async Task ShowLogs()
-        {
-            var logs = new Action<string>(x =>
-            {
-                this.logTextBox.Text = x;
-            });
-            await containersService.GetContainerLogsAsync(new Progress<string>(logs), this.containerId);
-        }
-
-        private void refreshLogs_Click(object sender, EventArgs e)
-        {
-            ShowLogs();
-        }
+    private void refreshLogs_Click(object sender, EventArgs e)
+    {
+        ShowLogs();
     }
 }

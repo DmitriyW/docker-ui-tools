@@ -1,16 +1,18 @@
-﻿using Docker.Helpers;
+﻿using Docker.Abstractions.Services;
+using Docker.Constants;
+using Docker.Helpers;
 using Docker.Models;
 
 namespace Docker.Services;
 
-public class ImageService
+public class ImageService : IImageService
 {
     public async Task GetImageAsync(IProgress<IEnumerable<DockerImage>> progress)
     {
         await Task.Run(() =>
         {
             var result = CommandRunner
-                .RunCommand("docker", "images -a --format json")
+                .RunCommand(Commands.Docker, $"{Commands.Images} -a --{Commands.Format} json")
                 .ToString()
                 .SplitToRows();
 
@@ -24,7 +26,7 @@ public class ImageService
         => await Task.Run(() =>
             {
                 progress.Report(CommandRunner
-                            .RunCommand("docker", $"rmi {imageId}")
+                            .RunCommand(Commands.Docker, $"{Commands.RemoveImage} {imageId}")
                             .ToString());
             });
 }
