@@ -7,8 +7,8 @@ public partial class MainForm : Form
     public MainForm()
     {
         Program.GetService<IContainerService>();
-        containerPage1 = new ContainerPage(Program.GetService<IContainerService>());
-        imagePage1 = new ImagePage(Program.GetService<IImageService>());
+        containerPageUC = new ContainerPage(Program.GetService<IContainerService>());
+        imagePageUC = new ImagePage(Program.GetService<IImageService>());
         InitializeComponent();
     }
 }

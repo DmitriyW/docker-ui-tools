@@ -176,7 +176,7 @@
             // 
             // containerPage
             // 
-            containerPage.Controls.Add(containerPage1);
+            containerPage.Controls.Add(containerPageUC);
             containerPage.Location = new Point(4, 40);
             containerPage.Name = "containerPage";
             containerPage.Padding = new Padding(3);
@@ -185,19 +185,19 @@
             containerPage.Text = "Containers";
             containerPage.UseVisualStyleBackColor = true;
             // 
-            // containerPage1
+            // containerPageUC
             // 
-            containerPage1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            containerPage1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point);
-            containerPage1.Location = new Point(8, 8);
-            containerPage1.Margin = new Padding(5);
-            containerPage1.Name = "containerPage1";
-            containerPage1.Size = new Size(1569, 687);
-            containerPage1.TabIndex = 0;
+            containerPageUC.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            containerPageUC.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point);
+            containerPageUC.Location = new Point(8, 8);
+            containerPageUC.Margin = new Padding(5);
+            containerPageUC.Name = "containerPage1";
+            containerPageUC.Size = new Size(1569, 687);
+            containerPageUC.TabIndex = 0;
             // 
             // imagePage
             // 
-            imagePage.Controls.Add(imagePage1);
+            imagePage.Controls.Add(imagePageUC);
             imagePage.Location = new Point(4, 40);
             imagePage.Name = "imagePage";
             imagePage.Padding = new Padding(3);
@@ -206,15 +206,15 @@
             imagePage.Text = "Images";
             imagePage.UseVisualStyleBackColor = true;
             // 
-            // imagePage1
+            // imagePageUC
             // 
-            imagePage1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            imagePage1.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold, GraphicsUnit.Point);
-            imagePage1.Location = new Point(8, 8);
-            imagePage1.Margin = new Padding(5);
-            imagePage1.Name = "imagePage1";
-            imagePage1.Size = new Size(1577, 683);
-            imagePage1.TabIndex = 0;
+            imagePageUC.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            imagePageUC.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold, GraphicsUnit.Point);
+            imagePageUC.Location = new Point(8, 8);
+            imagePageUC.Margin = new Padding(5);
+            imagePageUC.Name = "imagePage1";
+            imagePageUC.Size = new Size(1577, 683);
+            imagePageUC.TabIndex = 0;
             // 
             // navigationImgs
             // 
@@ -270,10 +270,10 @@
         private ToolStripMenuItem restartContainerMenu;
         private ColumnHeader lastStarted;
         private TabPage imagePage;
-        private ImagePage imagePage1;
+        private ImagePage imagePageUC;
         private ToolStripSeparator toolStripSeparator2;
         private ToolStripMenuItem viewLogs;
         private ColumnHeader message;
-        private ContainerPage containerPage1;
+        private ContainerPage containerPageUC;
     }
 }
