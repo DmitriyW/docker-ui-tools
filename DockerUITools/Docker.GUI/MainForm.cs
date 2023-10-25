@@ -1,4 +1,4 @@
-using Docker.Services;
+using Docker.Abstractions.Services;
 
 namespace Docker.GUI;
 
@@ -6,8 +6,9 @@ public partial class MainForm : Form
 {
     public MainForm()
     {
-        containerPage1 = new ContainerPage(new ContainerService());
-        imagePage1 = new ImagePage(new ImageService());
+        Program.GetService<IContainerService>();
+        containerPage1 = new ContainerPage(Program.GetService<IContainerService>());
+        imagePage1 = new ImagePage(Program.GetService<IImageService>());
         InitializeComponent();
     }
 }

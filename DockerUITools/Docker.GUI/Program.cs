@@ -1,3 +1,7 @@
+using Docker.Abstractions.Services;
+using Docker.Services;
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Docker.GUI
 {
     internal static class Program
@@ -8,10 +12,28 @@ namespace Docker.GUI
         [STAThread]
         static void Main()
         {
+            ConfigureServices();
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             Application.Run(new MainForm());
+        }
+
+        public static IServiceProvider ServiceProvider { get; set; }
+
+        static void ConfigureServices()
+        {
+            var services = new ServiceCollection();
+
+            services.AddScoped<IContainerService, ContainerService>();
+            services.AddScoped<IImageService, ImageService>();
+
+            ServiceProvider = services.BuildServiceProvider();
+        }
+
+        public static T? GetService<T>() where T : class
+        {
+            return (T?)ServiceProvider.GetService(typeof(T));
         }
     }
 }
