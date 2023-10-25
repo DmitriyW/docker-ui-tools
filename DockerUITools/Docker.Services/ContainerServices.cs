@@ -33,52 +33,52 @@ public class ContainerServices
         });
     }
 
-    public async Task StartContainerAsync(IProgress<string> progress, string containerId)
+    public async Task StartContainerAsync(IProgress<CommandResult> progress, string containerId)
         => await Task.Run(() =>
             {
-                progress.Report(CommandRunner
+                progress.Report(new CommandResult(containerId, CommandRunner
                     .RunCommand("docker", $"start {containerId}")
-                    .ToString());
+                    .ToString()));
             });
 
-    public async Task RestartContainerAsync(IProgress<string> progress, string containerId)
+    public async Task RestartContainerAsync(IProgress<CommandResult> progress, string containerId)
         => await Task.Run(() =>
             {
-                progress.Report(CommandRunner
+                progress.Report(new CommandResult(containerId, CommandRunner
                     .RunCommand("docker", $"restart {containerId}")
-                    .ToString());
+                    .ToString()));
             });
 
-    public async Task StopContainerAsync(IProgress<string> progress, string containerId)
+    public async Task StopContainerAsync(IProgress<CommandResult> progress, string containerId)
         => await Task.Run(() =>
             {
-                progress.Report(CommandRunner
+                progress.Report(new CommandResult(containerId, CommandRunner
                         .RunCommand("docker", $"stop {containerId}")
-                        .ToString());
+                        .ToString()));
             });
 
-    public async Task PauseContainerAsync(IProgress<string> progress, string containerId)
+    public async Task PauseContainerAsync(IProgress<CommandResult> progress, string containerId)
         => await Task.Run(() =>
             {
-                progress.Report(CommandRunner
+                progress.Report(new CommandResult(containerId, CommandRunner
                         .RunCommand("docker", $"pause {containerId}")
-                        .ToString());
+                        .ToString()));
             });
 
-    public async Task UnpauseContainerAsync(IProgress<string> progress, string containerId)
+    public async Task UnpauseContainerAsync(IProgress<CommandResult> progress, string containerId)
         => await Task.Run(() =>
             {
-                progress.Report(CommandRunner
+                progress.Report(new CommandResult(containerId, CommandRunner
                         .RunCommand("docker", $"unpause {containerId}")
-                        .ToString());
+                        .ToString()));
             });
 
-    public async Task DeleteContainerAsync(IProgress<string> progress, string containerId)
+    public async Task DeleteContainerAsync(IProgress<CommandResult> progress, string containerId)
         => await Task.Run(() =>
             {
-                progress.Report(CommandRunner
+                progress.Report(new CommandResult(containerId, CommandRunner
                         .RunCommand("docker", $"rm {containerId}")
-                        .ToString());
+                        .ToString()));
             });
 
     public async Task GetContainerLogsAsync(IProgress<string> progress, string containerId)

@@ -10,6 +10,7 @@ namespace Docker.GUI
         private string currentGroup = "All";
         private readonly ContainerServices containersService;
         private IList<string> _selectedContainers = new List<string>();
+        private IDictionary<string,string> _messages = new Dictionary<string, string>();
 
         public Form1()
         {
@@ -162,6 +163,7 @@ namespace Docker.GUI
                 lvi.SubItems.Add(item.State);
                 lvi.SubItems.Add(item.Ports);
                 lvi.SubItems.Add(item.Status);
+                lvi.SubItems.Add(this._messages.ContainsKey(item.ID) ? this._messages[item.ID] : string.Empty);
                 lvi.ImageIndex = GetContainerImage(item.State.Trim().ToLower());
                 lvi.ForeColor = item.State.Trim().ToLower() == "running" || item.State.Trim().ToLower() == "paused" ? SystemColors.WindowText : SystemColors.GrayText;
                 list.Add(lvi);
@@ -189,10 +191,23 @@ namespace Docker.GUI
             startContainerAsync();
         }
 
+        private void UpdateResultMessages(CommandResult result)
+        {
+            if (this._messages.ContainsKey(result.ElementId))
+            {
+                this._messages[result.ElementId] = result.Message;
+            }
+            else
+            {
+                this._messages.Add(result.ElementId, result.Message);
+            }
+        }
+
         private async Task startContainerAsync()
         {
-            var startResult = new Action<string>(x =>
+            var startResult = new Action<CommandResult>(x =>
             {
+                UpdateResultMessages(x);
                 RefreshContainersAsync();
             });
 
@@ -200,11 +215,11 @@ namespace Docker.GUI
             {
                 if (FilteredList().ToList()[index].State == "paused")
                 {
-                    await containersService.UnpauseContainerAsync(new Progress<string>(startResult), FilteredList().ToList()[index].ID);
+                    await containersService.UnpauseContainerAsync(new Progress<CommandResult>(startResult), FilteredList().ToList()[index].ID);
                 }
                 else if (FilteredList().ToList()[index].State != "running")
                 {
-                    await containersService.StartContainerAsync(new Progress<string>(startResult), FilteredList().ToList()[index].ID);
+                    await containersService.StartContainerAsync(new Progress<CommandResult>(startResult), FilteredList().ToList()[index].ID);
                 }
             }
         }
@@ -216,13 +231,15 @@ namespace Docker.GUI
 
         private async Task StopContainers()
         {
-            var stopResult = new Action<string>(x =>
+            var stopResult = new Action<CommandResult>(x =>
             {
+                UpdateResultMessages(x);
                 RefreshContainersAsync();
             });
             foreach (int index in GetSelectedIndexes())
             {
-                await containersService.StopContainerAsync(new Progress<string>(stopResult), FilteredList().ToList()[index].ID);
+                if(FilteredList().ToList()[index].State != "exited")
+                await containersService.StopContainerAsync(new Progress<CommandResult>(stopResult), FilteredList().ToList()[index].ID);
             }
         }
 
@@ -233,13 +250,14 @@ namespace Docker.GUI
 
         private async Task PauseContainers()
         {
-            var pauseResult = new Action<string>(x =>
+            var pauseResult = new Action<CommandResult>(x =>
             {
+                UpdateResultMessages(x);
                 RefreshContainersAsync();
             });
             foreach (int index in GetSelectedIndexes())
             {
-                await containersService.PauseContainerAsync(new Progress<string>(pauseResult), FilteredList().ToList()[index].ID);
+                await containersService.PauseContainerAsync(new Progress<CommandResult>(pauseResult), FilteredList().ToList()[index].ID);
             }
         }
 
@@ -250,13 +268,14 @@ namespace Docker.GUI
 
         private async Task DeleteContainers()
         {
-            var deleteResult = new Action<string>(x =>
+            var deleteResult = new Action<CommandResult>(x =>
             {
+                UpdateResultMessages(x);
                 RefreshContainersAsync();
             });
             foreach (int index in GetSelectedIndexes())
             {
-                await containersService.DeleteContainerAsync(new Progress<string>(deleteResult), FilteredList().ToList()[index].ID);
+                await containersService.DeleteContainerAsync(new Progress<CommandResult>(deleteResult), FilteredList().ToList()[index].ID);
             }
         }
 
@@ -302,18 +321,19 @@ namespace Docker.GUI
             var focusedItem = this.containerList.FocusedItem;
             var index = focusedItem.Index;
 
-            var startResult = new Action<string>(x =>
+            var startResult = new Action<CommandResult>(x =>
             {
+                UpdateResultMessages(x);
                 RefreshContainersAsync();
             });
 
             if (FilteredList().ToList()[index].State == "paused")
             {
-                containersService.UnpauseContainerAsync(new Progress<string>(startResult), FilteredList().ToList()[index].ID);
+                containersService.UnpauseContainerAsync(new Progress<CommandResult>(startResult), FilteredList().ToList()[index].ID);
             }
             else if (FilteredList().ToList()[index].State != "running")
             {
-                containersService.StartContainerAsync(new Progress<string>(startResult), FilteredList().ToList()[index].ID);
+                containersService.StartContainerAsync(new Progress<CommandResult>(startResult), FilteredList().ToList()[index].ID);
             }
         }
 
@@ -327,12 +347,13 @@ namespace Docker.GUI
 
         private async Task restartContainerAsync(int index)
         {
-            var restartResult = new Action<string>(x =>
+            var restartResult = new Action<CommandResult>(x =>
             {
+                UpdateResultMessages(x);
                 RefreshContainersAsync();
             });
 
-            await containersService.RestartContainerAsync(new Progress<string>(restartResult), FilteredList().ToList()[index].ID);
+            await containersService.RestartContainerAsync(new Progress<CommandResult>(restartResult), FilteredList().ToList()[index].ID);
         }
 
         private void stopContainerMenu_Click(object sender, EventArgs e)
@@ -345,11 +366,12 @@ namespace Docker.GUI
 
         private async Task StopContainer(int index)
         {
-            var stopResult = new Action<string>(x =>
+            var stopResult = new Action<CommandResult>(x =>
             {
+                UpdateResultMessages(x);
                 RefreshContainersAsync();
             });
-            await containersService.StopContainerAsync(new Progress<string>(stopResult), FilteredList().ToList()[index].ID);
+            await containersService.StopContainerAsync(new Progress<CommandResult>(stopResult), FilteredList().ToList()[index].ID);
         }
 
         private void pauseContainerMenu_Click(object sender, EventArgs e)
@@ -361,11 +383,12 @@ namespace Docker.GUI
 
         private async Task PauseContainer(int index)
         {
-            var pauseResult = new Action<string>(x =>
+            var pauseResult = new Action<CommandResult>(x =>
             {
+                UpdateResultMessages(x);
                 RefreshContainersAsync();
             });
-            await containersService.PauseContainerAsync(new Progress<string>(pauseResult), FilteredList().ToList()[index].ID);
+            await containersService.PauseContainerAsync(new Progress<CommandResult>(pauseResult), FilteredList().ToList()[index].ID);
         }
 
         private void deleteContainerMenu_Click(object sender, EventArgs e)
@@ -377,11 +400,12 @@ namespace Docker.GUI
 
         private async Task DeleteContainer(int index)
         {
-            var deleteResult = new Action<string>(x =>
+            var deleteResult = new Action<CommandResult>(x =>
             {
+                UpdateResultMessages(x);
                 RefreshContainersAsync();
             });
-            await containersService.DeleteContainerAsync(new Progress<string>(deleteResult), FilteredList().ToList()[index].ID);
+            await containersService.DeleteContainerAsync(new Progress<CommandResult>(deleteResult), FilteredList().ToList()[index].ID);
         }
 
         private void copyIdContainerMenu_Click(object sender, EventArgs e)
