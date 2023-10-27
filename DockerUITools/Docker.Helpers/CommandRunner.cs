@@ -13,7 +13,12 @@ public static class CommandRunner
         proc.StartInfo.RedirectStandardOutput = true;
         proc.StartInfo.CreateNoWindow = true;
         proc.Start();
+        var result = proc.StandardOutput.ReadToEnd();
+        proc.Close();
+        proc.Dispose();
 
-        return proc.StandardOutput.ReadToEnd();
+        Thread.Sleep(200);
+
+        return result;
     }
 }

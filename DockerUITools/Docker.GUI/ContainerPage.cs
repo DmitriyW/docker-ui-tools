@@ -1,4 +1,5 @@
 ﻿using Docker.Abstractions.Services;
+using Docker.GUI.Extentions;
 using Docker.Models;
 using containers = Docker.Constants.Containers;
 
@@ -171,7 +172,6 @@ public partial class ContainerPage : UserControl
     private void ViewContainers()
     {
         var list = new List<ListViewItem>();
-        containerList.Items.Clear();
 
         foreach (var item in FilteredList())
         {
@@ -190,7 +190,27 @@ public partial class ContainerPage : UserControl
             list.Add(lvi);
         }
 
-        this.containerList.Items.AddRange(list.ToArray());
+        for (int i = 0; i < list.Count; i++)
+        {            
+            if (i < this.containerList.Items.Count)
+            {
+                if(!this.containerList.Items[i].Compare(list[i]))
+                {
+                    this.containerList.Items[i] = list[i];
+                }
+            }
+            else
+            {
+                this.containerList.Items.Add(list[i]);
+            }
+        }
+        if (list.Count < this.containerList.Items.Count)
+        {
+            while (this.containerList.Items.Count != list.Count)
+            {
+                this.containerList.Items.RemoveAt(list.Count);
+            }
+        }
     }
 
     private int GetContainerIconId(string state)

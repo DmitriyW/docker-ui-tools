@@ -1,4 +1,5 @@
 ﻿using Docker.Abstractions.Services;
+using Docker.GUI.Extentions;
 using Docker.Models;
 
 namespace Docker.GUI;
@@ -124,12 +125,14 @@ public partial class ImagePage : UserControl
         }
     }
 
+    private IEnumerable<DockerImage> FilteredList() =>
+        filter.Length > 0 ? _images.Where(c => c.Repository.IndexOf(this.searchImage.Text) == 0) : _images;
+
     private void ViewImages()
     {
         var list = new List<ListViewItem>();
-        imageList.Items.Clear();
 
-        foreach (var item in filter.Length > 0 ? _images.Where(c => c.Repository.IndexOf(this.searchImage.Text) == 0) : _images)
+        foreach (var item in FilteredList())
         {
             var lvi = new ListViewItem();
             lvi.Checked = _selectedImages.Contains(item.ID);
@@ -140,7 +143,27 @@ public partial class ImagePage : UserControl
             list.Add(lvi);
         }
 
-        this.imageList.Items.AddRange(list.ToArray());
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (i < this.imageList.Items.Count)
+            {
+                if (!this.imageList.Items[i].Compare(list[i]))
+                {
+                    this.imageList.Items[i] = list[i];
+                }
+            }
+            else
+            {
+                this.imageList.Items.Add(list[i]);
+            }
+        }
+        if (list.Count < this.imageList.Items.Count)
+        {
+            while (this.imageList.Items.Count != list.Count)
+            {
+                this.imageList.Items.RemoveAt(list.Count);
+            }
+        }
     }
 
     private void deleteImage_Click(object sender, EventArgs e)
@@ -156,7 +179,7 @@ public partial class ImagePage : UserControl
         });
         foreach (int index in GetSelectedIndexes())
         {
-            await imageService.DeleteContainerAsync(new Progress<string>(deleteResult), _images.ToList()[index].ID);
+            await imageService.DeleteContainerAsync(new Progress<string>(deleteResult), FilteredList().ToList()[index].ID);
         }
     }
 
@@ -173,7 +196,7 @@ public partial class ImagePage : UserControl
         {
             RefreshImagesAsync();
         });
-        await imageService.DeleteContainerAsync(new Progress<string>(deleteResult), _images.ToList()[index].ID);
+        await imageService.DeleteContainerAsync(new Progress<string>(deleteResult), FilteredList().ToList()[index].ID);
     }
 
     private void copyImageId_Click(object sender, EventArgs e)
@@ -181,6 +204,6 @@ public partial class ImagePage : UserControl
         var focusedItem = this.imageList.FocusedItem;
         var index = focusedItem.Index;
 
-        Clipboard.SetText(_images.ToList()[index].ID);
+        Clipboard.SetText(FilteredList().ToList()[index].ID);
     }
 }
