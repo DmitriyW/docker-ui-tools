@@ -35,14 +35,14 @@
             tagImg = new ColumnHeader();
             createdImg = new ColumnHeader();
             sizeImg = new ColumnHeader();
-            refreshImageList = new Button();
-            searchImage = new TextBox();
-            checkAll = new CheckBox();
-            deleteImage = new Button();
             imageContextMenu = new ContextMenuStrip(components);
             deleteDockerImage = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
             copyImageId = new ToolStripMenuItem();
+            refreshImageList = new Button();
+            searchImage = new TextBox();
+            checkAll = new CheckBox();
+            deleteImage = new Button();
             imageContextMenu.SuspendLayout();
             SuspendLayout();
             // 
@@ -90,6 +90,32 @@
             sizeImg.Text = "Size";
             sizeImg.Width = 150;
             // 
+            // imageContextMenu
+            // 
+            imageContextMenu.ImageScalingSize = new Size(20, 20);
+            imageContextMenu.Items.AddRange(new ToolStripItem[] { deleteDockerImage, toolStripSeparator1, copyImageId });
+            imageContextMenu.Name = "imageContextMenu";
+            imageContextMenu.Size = new Size(176, 58);
+            // 
+            // deleteDockerImage
+            // 
+            deleteDockerImage.Name = "deleteDockerImage";
+            deleteDockerImage.Size = new Size(175, 24);
+            deleteDockerImage.Text = "Delete";
+            deleteDockerImage.Click += deleteDockerImage_Click;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(172, 6);
+            // 
+            // copyImageId
+            // 
+            copyImageId.Name = "copyImageId";
+            copyImageId.Size = new Size(175, 24);
+            copyImageId.Text = "Copy Image Id";
+            copyImageId.Click += copyImageId_Click;
+            // 
             // refreshImageList
             // 
             refreshImageList.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -124,39 +150,13 @@
             // 
             deleteImage.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             deleteImage.BackColor = Color.LightSalmon;
-            deleteImage.Location = new Point(684, 7);
+            deleteImage.Location = new Point(714, 7);
             deleteImage.Name = "deleteImage";
             deleteImage.Size = new Size(109, 46);
             deleteImage.TabIndex = 11;
             deleteImage.Text = "Delete";
             deleteImage.UseVisualStyleBackColor = false;
             deleteImage.Click += deleteImage_Click;
-            // 
-            // imageContextMenu
-            // 
-            imageContextMenu.ImageScalingSize = new Size(20, 20);
-            imageContextMenu.Items.AddRange(new ToolStripItem[] { deleteDockerImage, toolStripSeparator1, copyImageId });
-            imageContextMenu.Name = "imageContextMenu";
-            imageContextMenu.Size = new Size(176, 58);
-            // 
-            // deleteDockerImage
-            // 
-            deleteDockerImage.Name = "deleteDockerImage";
-            deleteDockerImage.Size = new Size(175, 24);
-            deleteDockerImage.Text = "Delete";
-            deleteDockerImage.Click += deleteDockerImage_Click;
-            // 
-            // toolStripSeparator1
-            // 
-            toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(172, 6);
-            // 
-            // copyImageId
-            // 
-            copyImageId.Name = "copyImageId";
-            copyImageId.Size = new Size(175, 24);
-            copyImageId.Text = "Copy Image Id";
-            copyImageId.Click += copyImageId_Click;
             // 
             // ImagePage
             // 
