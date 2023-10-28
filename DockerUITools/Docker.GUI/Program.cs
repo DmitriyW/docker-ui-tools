@@ -1,4 +1,5 @@
 using Docker.Abstractions.Services;
+using Docker.GUI.Pages;
 using Docker.Services;
 using Microsoft.Extensions.DependencyInjection;
 

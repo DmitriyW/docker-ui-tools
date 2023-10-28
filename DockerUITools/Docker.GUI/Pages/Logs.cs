@@ -1,6 +1,6 @@
 ﻿using Docker.Services;
 
-namespace Docker.GUI;
+namespace Docker.GUI.Pages;
 
 public partial class Logs : Form
 {

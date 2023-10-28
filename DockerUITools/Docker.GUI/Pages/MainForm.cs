@@ -1,6 +1,6 @@
 using Docker.Abstractions.Services;
 
-namespace Docker.GUI;
+namespace Docker.GUI.Pages;
 
 public partial class MainForm : Form
 {

@@ -3,7 +3,7 @@ using Docker.GUI.Extentions;
 using Docker.Models;
 using containers = Docker.Constants.Containers;
 
-namespace Docker.GUI;
+namespace Docker.GUI.Pages;
 
 public partial class ContainerPage : UserControl
 {

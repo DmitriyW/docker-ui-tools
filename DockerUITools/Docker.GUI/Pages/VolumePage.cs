@@ -2,7 +2,7 @@
 using Docker.GUI.Extentions;
 using Docker.Models;
 
-namespace Docker.GUI;
+namespace Docker.GUI.Pages;
 
 public partial class VolumePage : UserControl
 {

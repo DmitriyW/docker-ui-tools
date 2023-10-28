@@ -1,4 +1,4 @@
-﻿namespace Docker.GUI
+﻿namespace Docker.GUI.Pages
 {
     partial class MainForm
     {
