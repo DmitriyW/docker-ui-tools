@@ -27,6 +27,7 @@ namespace Docker.GUI
 
             services.AddScoped<IContainerService, ContainerService>();
             services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<IVolumeService, VolumeService>();
 
             ServiceProvider = services.BuildServiceProvider();
         }

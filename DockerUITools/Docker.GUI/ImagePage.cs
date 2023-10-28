@@ -16,12 +16,17 @@ public partial class ImagePage : UserControl
         this.imageService = imageService;
         InitializeComponent();
 
+        SetIvents();
+
+        RefreshImagesAsync();
+    }
+
+    private void SetIvents()
+    {
         this.searchImage.TextChanged += SearchImage_TextChanged;
         this.checkAll.Click += CheckAll_Click;
         this.imageList.ItemChecked += ImageList_ItemChecked;
         this.imageList.MouseClick += ImageList_MouseClick;
-
-        RefreshImagesAsync();
     }
 
     private void ImageList_MouseClick(object? sender, MouseEventArgs e)
@@ -116,7 +121,7 @@ public partial class ImagePage : UserControl
                 ViewImages();
                 this.refreshImageList.Enabled = true;
             });
-            await imageService.GetImageAsync(new Progress<IEnumerable<DockerImage>>(getImages));
+            await imageService.GetImagesAsync(new Progress<IEnumerable<DockerImage>>(getImages));
         }
         else
         {
@@ -179,7 +184,7 @@ public partial class ImagePage : UserControl
         });
         foreach (int index in GetSelectedIndexes())
         {
-            await imageService.DeleteContainerAsync(new Progress<string>(deleteResult), FilteredList().ToList()[index].ID);
+            await imageService.DeleteImageAsync(new Progress<string>(deleteResult), FilteredList().ToList()[index].ID);
         }
     }
 
@@ -196,7 +201,7 @@ public partial class ImagePage : UserControl
         {
             RefreshImagesAsync();
         });
-        await imageService.DeleteContainerAsync(new Progress<string>(deleteResult), FilteredList().ToList()[index].ID);
+        await imageService.DeleteImageAsync(new Progress<string>(deleteResult), FilteredList().ToList()[index].ID);
     }
 
     private void copyImageId_Click(object sender, EventArgs e)
