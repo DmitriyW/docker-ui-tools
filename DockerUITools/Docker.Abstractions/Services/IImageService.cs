@@ -4,7 +4,7 @@ namespace Docker.Abstractions.Services;
 
 public interface IImageService
 {
-    public Task GetImageAsync(IProgress<IEnumerable<DockerImage>> progress);
+    public Task GetImagesAsync(IProgress<IEnumerable<DockerImage>> progress);
 
-    public Task DeleteContainerAsync(IProgress<string> progress, string imageId);
+    public Task DeleteImageAsync(IProgress<string> progress, string imageId);
 }

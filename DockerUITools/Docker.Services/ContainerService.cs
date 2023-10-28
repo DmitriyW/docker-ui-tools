@@ -79,7 +79,7 @@ public class ContainerService : IContainerService
         => await Task.Run(() =>
             {
                 progress.Report(new CommandResult(containerId, CommandRunner
-                        .RunCommand(Commands.Docker, $"{Commands.DeleteContainer} {containerId}")
+                        .RunCommand(Commands.Docker, $"{Commands.Delete} {containerId}")
                         .ToString()));
             });
 

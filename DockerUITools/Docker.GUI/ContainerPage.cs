@@ -51,6 +51,9 @@ public partial class ContainerPage : UserControl
 
     private void ContainerGroups_NodeMouseClick(object? sender, TreeNodeMouseClickEventArgs e)
     {
+        this.checkAll.Checked = false; 
+        ChangeCheckboxStateForContainers(this.checkAll.Checked);
+
         var selectedNode = e.Node;
         if (selectedNode != null)
         {

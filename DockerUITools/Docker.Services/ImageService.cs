@@ -7,7 +7,7 @@ namespace Docker.Services;
 
 public class ImageService : IImageService
 {
-    public async Task GetImageAsync(IProgress<IEnumerable<DockerImage>> progress)
+    public async Task GetImagesAsync(IProgress<IEnumerable<DockerImage>> progress)
     {
         await Task.Run(() =>
         {
@@ -22,7 +22,7 @@ public class ImageService : IImageService
         });
     }
 
-    public async Task DeleteContainerAsync(IProgress<string> progress, string imageId)
+    public async Task DeleteImageAsync(IProgress<string> progress, string imageId)
         => await Task.Run(() =>
             {
                 progress.Report(CommandRunner

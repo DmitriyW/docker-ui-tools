@@ -5,6 +5,7 @@ public static class Commands
     public const string Docker = "docker";
     public const string Images = "images";
     public const string Format = "format";
+    public const string Volume = "volume";
 
     public const string RemoveImage = "rmi";
     public const string ContainerList = "ps";
@@ -17,6 +18,7 @@ public static class Commands
     public const string Stop = "stop";
     public const string Pause = "pause";
     public const string Unpause = "unpause";
-    public const string DeleteContainer = "rm";
+    public const string Delete = "rm";
     public const string Logs = "logs";
+    public const string List = "ls";
 }
