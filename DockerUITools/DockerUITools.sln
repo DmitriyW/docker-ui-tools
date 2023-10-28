@@ -11,9 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Docker.Services", "Docker.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Docker.Models", "Docker.Models\Docker.Models.csproj", "{5F5DF9C9-13BF-4C15-9634-11312253A25A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docker.Abstractions", "Docker.Abstractions\Docker.Abstractions.csproj", "{113BB062-9A54-4E22-B5A9-02767B25359A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Docker.Abstractions", "Docker.Abstractions\Docker.Abstractions.csproj", "{113BB062-9A54-4E22-B5A9-02767B25359A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docker.Constants", "Docker.Constants\Docker.Constants.csproj", "{34A37FBA-557E-4152-AC26-237FBC71703E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Docker.Constants", "Docker.Constants\Docker.Constants.csproj", "{34A37FBA-557E-4152-AC26-237FBC71703E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1C236E17-4389-485B-B5D2-2C581CF21D2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Docker.Services.UnitTests", "Docker.Services.UnitTests\Docker.Services.UnitTests.csproj", "{D7BBE4CE-427B-40BB-93D5-E7DC3953D652}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,9 +49,16 @@ Global
 		{34A37FBA-557E-4152-AC26-237FBC71703E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34A37FBA-557E-4152-AC26-237FBC71703E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34A37FBA-557E-4152-AC26-237FBC71703E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7BBE4CE-427B-40BB-93D5-E7DC3953D652}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7BBE4CE-427B-40BB-93D5-E7DC3953D652}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7BBE4CE-427B-40BB-93D5-E7DC3953D652}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7BBE4CE-427B-40BB-93D5-E7DC3953D652}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D7BBE4CE-427B-40BB-93D5-E7DC3953D652} = {1C236E17-4389-485B-B5D2-2C581CF21D2F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {39488666-B522-4CFA-95E9-D53F0AC224D7}

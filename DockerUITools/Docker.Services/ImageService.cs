@@ -7,11 +7,18 @@ namespace Docker.Services;
 
 public class ImageService : IImageService
 {
+    private readonly ICommandRunner commandRunner;
+
+    public ImageService(ICommandRunner commandRunner)
+    {
+        this.commandRunner = commandRunner;
+    }
+
     public async Task GetImagesAsync(IProgress<IEnumerable<DockerImage>> progress)
     {
         await Task.Run(() =>
         {
-            var result = CommandRunner
+            var result = commandRunner
                 .RunCommand(Commands.Docker, $"{Commands.Images} -a --{Commands.Format} json")
                 .ToString()
                 .SplitToRows();
@@ -25,7 +32,7 @@ public class ImageService : IImageService
     public async Task DeleteImageAsync(IProgress<string> progress, string imageId)
         => await Task.Run(() =>
             {
-                progress.Report(CommandRunner
+                progress.Report(commandRunner
                             .RunCommand(Commands.Docker, $"{Commands.RemoveImage} {imageId}")
                             .ToString());
             });

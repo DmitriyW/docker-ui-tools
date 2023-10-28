@@ -10,13 +10,13 @@ public partial class ContainerPage : UserControl
     private IList<Container> _containers = new List<Container>();
     private string filter = string.Empty;
     private string currentGroup = containers.ALL;
-    private readonly IContainerService containersService;
+    private readonly IContainerService containerService;
     private IList<string> _selectedContainers = new List<string>();
     private IDictionary<string, string> _messages = new Dictionary<string, string>();
 
     public ContainerPage(IContainerService containerService)
     {
-        this.containersService = containerService;
+        this.containerService = containerService;
         InitializeComponent();
         AddEvents();
 
@@ -162,7 +162,7 @@ public partial class ContainerPage : UserControl
                 ViewContainers();
                 this.refreshContainerList.Enabled = true;
             });
-            await containersService.GetContainersAsync(new Progress<IEnumerable<Container>>(getContainers));
+            await containerService.GetContainersAsync(new Progress<IEnumerable<Container>>(getContainers));
             viewGroups();
         }
         else
@@ -259,11 +259,11 @@ public partial class ContainerPage : UserControl
         {
             if (FilteredList().ToList()[index].State == containers.Paused)
             {
-                await containersService.UnPauseContainerAsync(new Progress<CommandResult>(startResult), FilteredList().ToList()[index].ID);
+                await containerService.UnPauseContainerAsync(new Progress<CommandResult>(startResult), FilteredList().ToList()[index].ID);
             }
             else if (FilteredList().ToList()[index].State != containers.Running)
             {
-                await containersService.StartContainerAsync(new Progress<CommandResult>(startResult), FilteredList().ToList()[index].ID);
+                await containerService.StartContainerAsync(new Progress<CommandResult>(startResult), FilteredList().ToList()[index].ID);
             }
         }
     }
@@ -283,7 +283,7 @@ public partial class ContainerPage : UserControl
         foreach (int index in GetSelectedIndexes())
         {
             if (FilteredList().ToList()[index].State != containers.Exited)
-                await containersService.StopContainerAsync(new Progress<CommandResult>(stopResult), FilteredList().ToList()[index].ID);
+                await containerService.StopContainerAsync(new Progress<CommandResult>(stopResult), FilteredList().ToList()[index].ID);
         }
     }
 
@@ -301,7 +301,7 @@ public partial class ContainerPage : UserControl
         });
         foreach (int index in GetSelectedIndexes())
         {
-            await containersService.PauseContainerAsync(new Progress<CommandResult>(pauseResult), FilteredList().ToList()[index].ID);
+            await containerService.PauseContainerAsync(new Progress<CommandResult>(pauseResult), FilteredList().ToList()[index].ID);
         }
     }
 
@@ -319,7 +319,7 @@ public partial class ContainerPage : UserControl
         });
         foreach (int index in GetSelectedIndexes())
         {
-            await containersService.DeleteContainerAsync(new Progress<CommandResult>(deleteResult), FilteredList().ToList()[index].ID);
+            await containerService.DeleteContainerAsync(new Progress<CommandResult>(deleteResult), FilteredList().ToList()[index].ID);
         }
     }
 
@@ -341,7 +341,7 @@ public partial class ContainerPage : UserControl
         if (focusedItem != null && focusedItem.Bounds.Contains(e.Location))
         {
             var index = focusedItem.Index;
-            var logWindow = new Logs(FilteredList().ToList()[index].ID, FilteredList().ToList()[index].Names);
+            var logWindow = new Logs(containerService, FilteredList().ToList()[index].ID, FilteredList().ToList()[index].Names);
             logWindow.Show();
         }
     }
@@ -373,11 +373,11 @@ public partial class ContainerPage : UserControl
 
         if (FilteredList().ToList()[index].State == containers.Paused)
         {
-            containersService.UnPauseContainerAsync(new Progress<CommandResult>(startResult), FilteredList().ToList()[index].ID);
+            containerService.UnPauseContainerAsync(new Progress<CommandResult>(startResult), FilteredList().ToList()[index].ID);
         }
         else if (FilteredList().ToList()[index].State != containers.Running)
         {
-            containersService.StartContainerAsync(new Progress<CommandResult>(startResult), FilteredList().ToList()[index].ID);
+            containerService.StartContainerAsync(new Progress<CommandResult>(startResult), FilteredList().ToList()[index].ID);
         }
     }
 
@@ -397,7 +397,7 @@ public partial class ContainerPage : UserControl
             RefreshContainersAsync();
         });
 
-        await containersService.RestartContainerAsync(new Progress<CommandResult>(restartResult), FilteredList().ToList()[index].ID);
+        await containerService.RestartContainerAsync(new Progress<CommandResult>(restartResult), FilteredList().ToList()[index].ID);
     }
 
     private void stopContainerMenu_Click(object sender, EventArgs e)
@@ -415,7 +415,7 @@ public partial class ContainerPage : UserControl
             UpdateResultMessages(x);
             RefreshContainersAsync();
         });
-        await containersService.StopContainerAsync(new Progress<CommandResult>(stopResult), FilteredList().ToList()[index].ID);
+        await containerService.StopContainerAsync(new Progress<CommandResult>(stopResult), FilteredList().ToList()[index].ID);
     }
 
     private void pauseContainerMenu_Click(object sender, EventArgs e)
@@ -432,7 +432,7 @@ public partial class ContainerPage : UserControl
             UpdateResultMessages(x);
             RefreshContainersAsync();
         });
-        await containersService.PauseContainerAsync(new Progress<CommandResult>(pauseResult), FilteredList().ToList()[index].ID);
+        await containerService.PauseContainerAsync(new Progress<CommandResult>(pauseResult), FilteredList().ToList()[index].ID);
     }
 
     private void deleteContainerMenu_Click(object sender, EventArgs e)
@@ -449,7 +449,7 @@ public partial class ContainerPage : UserControl
             UpdateResultMessages(x);
             RefreshContainersAsync();
         });
-        await containersService.DeleteContainerAsync(new Progress<CommandResult>(deleteResult), FilteredList().ToList()[index].ID);
+        await containerService.DeleteContainerAsync(new Progress<CommandResult>(deleteResult), FilteredList().ToList()[index].ID);
     }
 
     private void copyIdContainerMenu_Click(object sender, EventArgs e)
@@ -472,7 +472,7 @@ public partial class ContainerPage : UserControl
         if (focusedItem != null)
         {
             var index = focusedItem.Index;
-            var logWindow = new Logs(FilteredList().ToList()[index].ID, FilteredList().ToList()[index].Names);
+            var logWindow = new Logs(containerService, FilteredList().ToList()[index].ID, FilteredList().ToList()[index].Names);
             logWindow.Show();
         }
     }

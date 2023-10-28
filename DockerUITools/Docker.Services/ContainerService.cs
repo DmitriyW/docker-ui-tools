@@ -7,13 +7,18 @@ namespace Docker.Services;
 
 public class ContainerService : IContainerService
 {
-    public ContainerService() { }
+    private readonly ICommandRunner commandRunner;
+
+    public ContainerService(ICommandRunner commandRunner)
+    {
+        this.commandRunner = commandRunner;
+    }
 
     public async Task GetContainersAsync(IProgress<IEnumerable<Container>> progress)
     {
         await Task.Run(() =>
         {
-            var result = CommandRunner
+            var result = commandRunner
                 .RunCommand(Commands.Docker, $"{Commands.ContainerList} -a --{Commands.Format} json")
                 .ToString()
                 .SplitToRows();
@@ -38,7 +43,7 @@ public class ContainerService : IContainerService
     public async Task StartContainerAsync(IProgress<CommandResult> progress, string containerId)
         => await Task.Run(() =>
             {
-                progress.Report(new CommandResult(containerId, CommandRunner
+                progress.Report(new CommandResult(containerId, commandRunner
                     .RunCommand(Commands.Docker, $"{Commands.Start} {containerId}")
                     .ToString()));
             });
@@ -46,7 +51,7 @@ public class ContainerService : IContainerService
     public async Task RestartContainerAsync(IProgress<CommandResult> progress, string containerId)
         => await Task.Run(() =>
             {
-                progress.Report(new CommandResult(containerId, CommandRunner
+                progress.Report(new CommandResult(containerId, commandRunner
                     .RunCommand(Commands.Docker, $"{Commands.Restart} {containerId}")
                     .ToString()));
             });
@@ -54,7 +59,7 @@ public class ContainerService : IContainerService
     public async Task StopContainerAsync(IProgress<CommandResult> progress, string containerId)
         => await Task.Run(() =>
             {
-                progress.Report(new CommandResult(containerId, CommandRunner
+                progress.Report(new CommandResult(containerId, commandRunner
                         .RunCommand(Commands.Docker, $"{Commands.Stop} {containerId}")
                         .ToString()));
             });
@@ -62,7 +67,7 @@ public class ContainerService : IContainerService
     public async Task PauseContainerAsync(IProgress<CommandResult> progress, string containerId)
         => await Task.Run(() =>
             {
-                progress.Report(new CommandResult(containerId, CommandRunner
+                progress.Report(new CommandResult(containerId, commandRunner
                         .RunCommand(Commands.Docker, $"{Commands.Pause} {containerId}")
                         .ToString()));
             });
@@ -70,7 +75,7 @@ public class ContainerService : IContainerService
     public async Task UnPauseContainerAsync(IProgress<CommandResult> progress, string containerId)
         => await Task.Run(() =>
             {
-                progress.Report(new CommandResult(containerId, CommandRunner
+                progress.Report(new CommandResult(containerId, commandRunner
                         .RunCommand(Commands.Docker, $"{Commands.Unpause} {containerId}")
                         .ToString()));
             });
@@ -78,7 +83,7 @@ public class ContainerService : IContainerService
     public async Task DeleteContainerAsync(IProgress<CommandResult> progress, string containerId)
         => await Task.Run(() =>
             {
-                progress.Report(new CommandResult(containerId, CommandRunner
+                progress.Report(new CommandResult(containerId, commandRunner
                         .RunCommand(Commands.Docker, $"{Commands.Delete} {containerId}")
                         .ToString()));
             });
@@ -86,7 +91,7 @@ public class ContainerService : IContainerService
     public async Task GetContainerLogsAsync(IProgress<string> progress, string containerId)
         => await Task.Run(() =>
             {
-                progress.Report(CommandRunner
+                progress.Report(commandRunner
                         .RunCommand(Commands.Docker, $"{Commands.Logs} {containerId}")
                         .ToString());
             });
