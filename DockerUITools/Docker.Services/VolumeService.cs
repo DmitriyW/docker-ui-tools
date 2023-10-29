@@ -7,11 +7,18 @@ namespace Docker.Services;
 
 public class VolumeService : IVolumeService
 {
+    private readonly ICommandRunner commandRunner;
+
+    public VolumeService(ICommandRunner commandRunner)
+    {
+        this.commandRunner = commandRunner;
+    }
+
     public async Task GetVolumesAsync(IProgress<IEnumerable<Volume>> progress)
     {
         await Task.Run(() =>
         {
-            var result = CommandRunner
+            var result = commandRunner
                 .RunCommand(Commands.Docker, $"{Commands.Volume} {Commands.List} --{Commands.Format} json")
                 .ToString()
                 .SplitToRows();
@@ -24,7 +31,7 @@ public class VolumeService : IVolumeService
     public async Task DeleteVolumeAsync(IProgress<string> progress, string volumeName)
         => await Task.Run(() =>
         {
-            progress.Report(CommandRunner
+            progress.Report(commandRunner
                         .RunCommand(Commands.Docker, $"{Commands.Volume} {Commands.Delete} {volumeName}")
                         .ToString());
         });

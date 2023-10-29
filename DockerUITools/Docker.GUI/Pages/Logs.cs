@@ -1,18 +1,18 @@
-﻿using Docker.Services;
+﻿using Docker.Abstractions.Services;
 
 namespace Docker.GUI.Pages;
 
 public partial class Logs : Form
 {
-    private readonly ContainerService containersService;
+    private readonly IContainerService containersService;
     private readonly string containerId;
 
-    public Logs(string containerId, string name)
+    public Logs(IContainerService containerService, string containerId, string name)
     {
         InitializeComponent();
         this.Text = name;
 
-        containersService = new ContainerService();
+        this.containersService = containersService;
         this.containerId = containerId;
         ShowLogs();
     }
