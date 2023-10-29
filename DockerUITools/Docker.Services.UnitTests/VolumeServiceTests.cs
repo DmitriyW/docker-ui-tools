@@ -25,6 +25,10 @@ namespace Docker.Services.UnitTests
             mockCommandRunner.Setup(x =>
                 x.RunCommand(Commands.Docker, $"{Commands.Volume} {Commands.Delete} volumeId"))
                 .Returns(string.Empty);
+
+            mockCommandRunner.Setup(x =>
+                x.RunCommand(Commands.Docker, $"{Commands.Volume} {Commands.List} --{Commands.Format} json"))
+                .Returns(string.Empty);
         }
 
         [Test]
