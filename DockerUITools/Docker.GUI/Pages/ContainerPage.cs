@@ -353,8 +353,11 @@ public partial class ContainerPage : UserControl
         var indexes = new List<int>();
         foreach (ListViewItem selectedContainer in this.containerList.CheckedItems)
         {
-            indexes.Add(selectedContainer.Index);
-            _selectedContainers.Add(_containers[selectedContainer.Index].ID);
+            if (_containers.Count > selectedContainer.Index)
+            {
+                indexes.Add(selectedContainer.Index);
+                _selectedContainers.Add(_containers[selectedContainer.Index].ID);
+            }
         }
 
         return indexes;

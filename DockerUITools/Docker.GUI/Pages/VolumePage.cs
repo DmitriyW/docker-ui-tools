@@ -78,8 +78,11 @@ public partial class VolumePage : UserControl
         var indexes = new List<int>();
         foreach (ListViewItem selectedContainer in this.volumeList.CheckedItems)
         {
-            indexes.Add(selectedContainer.Index);
-            _selectedVolumes.Add(_volumes[selectedContainer.Index].Name);
+            if (_volumes.Count > selectedContainer.Index)
+            {
+                indexes.Add(selectedContainer.Index);
+                _selectedVolumes.Add(_volumes[selectedContainer.Index].Name);
+            }
         }
 
         return indexes;

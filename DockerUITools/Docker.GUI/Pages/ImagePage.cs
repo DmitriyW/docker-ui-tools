@@ -74,8 +74,11 @@ public partial class ImagePage : UserControl
         var indexes = new List<int>();
         foreach (ListViewItem selectedContainer in this.imageList.CheckedItems)
         {
-            indexes.Add(selectedContainer.Index);
-            _selectedImages.Add(_images[selectedContainer.Index].ID);
+            if (_images.Count > selectedContainer.Index)
+            {
+                indexes.Add(selectedContainer.Index);
+                _selectedImages.Add(_images[selectedContainer.Index].ID);
+            }
         }
 
         return indexes;
